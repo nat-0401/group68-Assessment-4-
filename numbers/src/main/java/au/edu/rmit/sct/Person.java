@@ -69,12 +69,12 @@ public class Person {
     }
     
     public HashMap<Date, Integer> getDemeritPoints() {
-        return demeritPoints;
-    }
-    
-    public void setDemeritPoints(HashMap<Date, Integer> demeritPoints) {
-        this.demeritPoints = demeritPoints;
-    }
+		  return demeritPoints;
+		 }
+
+	public void setDemeritPoints(String input) {
+		  this.demeritPoints = convertStringToHashMap(input);
+		}
     
     public boolean isSuspended() {
         return isSuspended;
@@ -103,25 +103,23 @@ public class Person {
     public static HashMap<Date, Integer> convertStringToHashMap(String input) {
         HashMap<Date, Integer> map = new HashMap<>();
         
-        // Remove the square brackets and split the string into individual entries
-        String[] entries = input.replaceAll("[\\[\\]\\{\\}]", "").split("],\\[");
+        String[] pairs = input.split(",");
+        if (pairs.length % 2 != 0) {
+            throw new IllegalArgumentException("Input string must have an even number of elements.");
+        }
         
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         
-        for (String entry : entries) {
-            String[] parts = entry.split(",");
-            if (parts.length == 2) {
-                try {
-                    Date date = dateFormat.parse(parts[0]);
-                    int points = Integer.parseInt(parts[1]);
-                    map.put(date, points);
-                } catch (ParseException e) {
-                    System.err.println("Error parsing date: " + parts[0]);
-                    e.printStackTrace();
-                } catch (NumberFormatException e) {
-                    System.err.println("Error parsing points: " + parts[1]);
-                    e.printStackTrace();
-                }
+        for (int i = 0; i < pairs.length; i += 2) {
+            try {
+                String dateStr = pairs[i];
+                int points = Integer.parseInt(pairs[i + 1]);
+                Date date = dateFormat.parse(dateStr);
+                map.put(date, points);
+            } catch (ParseException e) {
+                throw new IllegalArgumentException("Invalid date format: " + pairs[i], e);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid points format: " + pairs[i + 1], e);
             }
         }
         
