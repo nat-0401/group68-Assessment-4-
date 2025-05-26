@@ -1,9 +1,17 @@
+package au.edu.rmit.sct;
+ 
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-
+ 
+import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+ 
 public class PersonFileHandler {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
     private static final String DELIMITER = "\\|";
@@ -43,7 +51,6 @@ public class PersonFileHandler {
  
  
     // Update a Person object in the file by personID
-    /*
     public void updatePersonInFile(Person updatedPerson) throws IOException, ParseException {
         // Read all existing records
         List<Person> persons = readAllPersonsFromFile();
@@ -71,7 +78,7 @@ public class PersonFileHandler {
             }
         }
     }
-    */
+
  
     // Convert Person object to file string format
     private String personToFileString(Person person) {
@@ -83,16 +90,15 @@ public class PersonFileHandler {
           .append(person.getBirthdate()).append("|");
         
         // Process demeritPoints
-        sb.append("[");
         for (Map.Entry<Date, Integer> entry : person.getDemeritPoints().entrySet()) {
-            sb.append(DATE_FORMAT.format(entry.getKey())).append(":").append(entry.getValue()).append(",");
+            sb.append(DATE_FORMAT.format(entry.getKey())).append(",").append(entry.getValue()).append(",");
         }
         if (!person.getDemeritPoints().isEmpty()) {
             sb.deleteCharAt(sb.length() - 1); // Remove the last comma
         }
-        sb.append("]|")
+        sb.append("|")
           .append(person.isSuspended());
-        System.out.println(sb);
+        System.out.printf("personToFileString : %s\n",sb);
         return sb.toString();
     }
  
@@ -124,22 +130,23 @@ public class PersonFileHandler {
         person.setBirthdate(parts[8]);
         
         // Process demeritPoints
-        String demeritPointsStr = parts[9];
-        HashMap<Date, Integer> demeritPoints = new HashMap<>();
-        if (!demeritPointsStr.equals("[]")) {
-            System.out.println(demeritPointsStr);
-//            String[] entries = demeritPointsStr.substring(1, demeritPointsStr.length() - 1).split(",");
-            System.out.printf("demeritPointsStr: %s\n",demeritPointsStr.replaceAll("\\\\[\\\\[|\\\\]\\\\]", ""));
-            String[] entries = demeritPointsStr.replaceAll("[\\[\\]\\{\\}]", "").split("],\\[");
-            for (String entry : entries) {
-            	System.out.printf("Entry: %s\n",entry);
-                String[] keyValue = entry.split(",");
-                Date date = DATE_FORMAT.parse(keyValue[0]);
-                int points = Integer.parseInt(keyValue[1]);
-                demeritPoints.put(date, points);
-            }
-        }
-        person.setDemeritPoints(demeritPoints);
+                String demeritPointsStr = parts[9];
+                HashMap<Date, Integer> demeritPoints = new HashMap<>();
+                if (!demeritPointsStr.equals("[]")) {
+                    System.out.println(demeritPointsStr);
+        //            String[] entries = demeritPointsStr.substring(1, demeritPointsStr.length() - 1).split(",");
+                    System.out.printf("demeritPointsStr: %s\n",demeritPointsStr.replaceAll("\\\\[\\\\[|\\\\]\\\\]", ""));
+                    String[] entries = demeritPointsStr.replaceAll("[\\[\\]\\{\\}]", "").split("],\\[");
+                    for (String entry : entries) {
+                        System.out.printf("Entry: %s\n",entry);
+                        String[] keyValue = entry.split(",");
+                        Date date = DATE_FORMAT.parse(keyValue[0]);
+                        int points = Integer.parseInt(keyValue[1]);
+                        demeritPoints.put(date, points);
+                    }
+                }
+                person.setDemeritPoints(demeritPoints);
+       
         
         // Process suspension status
         person.setSuspended(Boolean.parseBoolean(parts[10]));
