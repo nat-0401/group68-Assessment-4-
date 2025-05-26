@@ -9,6 +9,53 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Person {
+    public boolean addPerson() {
+		//Condition 1: personID should be exactly 10 characters long;
+		if (personID.length() != 10)
+			return false;
+		//the first two characters should be numbers between 2 and 9;
+		if (!personID.substring(0, 2).matches("[2-9]{2}"))
+			return false;
+		//there should be at least two special characters between characters 3 and 8;
+		String middle = personID.substring(2, 8);
+		int specialCount = 0;
+		for (char c : middle.toCharArray()) {
+            if (!Character.isLetterOrDigit(c)) specialCount++;
+        }
+		if (specialCount < 2)
+			return false;
+		//the last two characters should be uppercase letters (A-Z);
+		if (!personID.substring(8).matches("[A-Z]{2}"))
+			return false;
+		//Condition 2: The address of the Person should follow the following format: Street Number|Street|City|State|Country;
+		// The State should be only Victoria;
+	     if (address == null)
+	    	 return false;
+
+	     String[] parts = address.split("\\|");
+	     if (parts.length != 5) {
+	    	 return false;
+	     }
+
+	     // Check state
+	     //String state = parts[3].trim();
+	     if (!(parts[3].trim().equals("Victoria"))) {
+	    	 return false;
+	     }
+		//Condition 3: The format of the birthdate of the person should follow the following format: DD-MM-YYYY;
+		
+	     if (birthdate == null) {
+	        return false;
+	     }
+
+	        // Check format DD-MM-YYYY
+	        Pattern pattern = Pattern.compile("^(0[1-9]|[12][0-9]|3[01])\\-(0[1-9]|1[0-2])\\-(\\d{4})$");
+	        Matcher matcher = pattern.matcher(birthdate);
+	     if (!matcher.matches()) {
+	    	 return false;
+	     }
+	      return true;
+	}
 
 
 
