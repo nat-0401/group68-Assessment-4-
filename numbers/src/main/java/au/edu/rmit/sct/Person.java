@@ -158,7 +158,7 @@ public class Person {
     
             // Check state
             //String state = parts[3].trim();
-            if (!(parts[3].trim().equals("Victoria"))) {
+            if (!(parts[3].trim().equalsIgnoreCase("Victoria"))) {
                 return false;
             }
         //Condition 3: The format of the birthdate of the person should follow the following format: DD-MM-YYYY;
