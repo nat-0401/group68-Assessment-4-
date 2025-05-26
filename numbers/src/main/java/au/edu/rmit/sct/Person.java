@@ -9,6 +9,106 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Person {
+	public String getPersonID() {
+		return personID;
+	}
+
+	public void setPersonID(String personID) {
+		this.personID = personID;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(String birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	public HashMap<Date, Integer> getDemeritPoints() {
+		return demeritPoints;
+	}
+
+	public void setDemeritPoints(HashMap<Date, Integer> demeritPoints) {
+		this.demeritPoints = demeritPoints;
+	}
+
+	public boolean isSuspended() {
+		return isSuspended;
+	}
+
+	public void setSuspended(boolean isSuspended) {
+		this.isSuspended = isSuspended;
+	}
+	
+	 public Person() {
+		  
+	 }
+
+	public Person(String personID, String firstName, String lastName,
+			   String address,  String birthdate, String demeritPoints,
+			   boolean isSuspended) {
+			  this.personID = personID;
+			  this.firstName = firstName;
+			  this.lastName = lastName;
+			  this.address = address;
+			  this.birthdate = birthdate;
+			  this.demeritPoints = convertStringToHashMap(demeritPoints);
+			  this.isSuspended = isSuspended;
+			 }
+	
+	public static HashMap<Date, Integer> convertStringToHashMap(String input) {
+        HashMap<Date, Integer> map = new HashMap<>();
+        
+        // Remove the square brackets and split the string into individual entries
+        String[] entries = input.replaceAll("[\\[\\]\\{\\}]", "").split("],\\[");
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        
+        for (String entry : entries) {
+            String[] parts = entry.split(",");
+            if (parts.length == 2) {
+                try {
+                    Date date = dateFormat.parse(parts[0]);
+                    int points = Integer.parseInt(parts[1]);
+                    map.put(date, points);
+                } catch (ParseException e) {
+                    System.err.println("Error parsing date: " + parts[0]);
+                    e.printStackTrace();
+                } catch (NumberFormatException e) {
+                    System.err.println("Error parsing points: " + parts[1]);
+                    e.printStackTrace();
+                }
+            }
+        }
+        
+        return map;
+    }
+
     public boolean addPerson() {
 		//Condition 1: personID should be exactly 10 characters long;
 		if (personID.length() != 10)
