@@ -1,9 +1,11 @@
+package au.edu.rmit.sct;
+ 
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-
+ 
 public class PersonFileHandler {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
     private static final String DELIMITER = "\\|";
@@ -31,9 +33,9 @@ public class PersonFileHandler {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null ) {
-            	if( !line.trim().isEmpty() ) {
-            		persons.add(stringToPerson(line));
-            	}
+                if( !line.trim().isEmpty() ) {
+                    persons.add(stringToPerson(line));
+                }
             }
             reader.close();
         }
@@ -132,7 +134,7 @@ public class PersonFileHandler {
             System.out.printf("demeritPointsStr: %s\n",demeritPointsStr.replaceAll("\\\\[\\\\[|\\\\]\\\\]", ""));
             String[] entries = demeritPointsStr.replaceAll("[\\[\\]\\{\\}]", "").split("],\\[");
             for (String entry : entries) {
-            	System.out.printf("Entry: %s\n",entry);
+                System.out.printf("Entry: %s\n",entry);
                 String[] keyValue = entry.split(",");
                 Date date = DATE_FORMAT.parse(keyValue[0]);
                 int points = Integer.parseInt(keyValue[1]);
