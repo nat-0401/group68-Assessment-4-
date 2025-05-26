@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PersonTest {
 
     private final String filePath = "persons.txt";
+    private final String filePath1 = "demeritPoints.txt";
 
     @BeforeEach
     public void setup() throws IOException {
@@ -19,6 +20,12 @@ public class PersonTest {
                          "23456,Jane,Smith,456 Park Ave,2010-10-20,1,false\n";
         Files.write(Paths.get(filePath), content.getBytes());
         System.out.println("File used for testing: " + Paths.get(filePath).toAbsolutePath());
+
+        // Setup a dummy demerit points file with sample data for testing
+        String content1 = "P001,Alice,Tan,123 Orchard Rd,15-05-2005,0,false\n" +  // under 21
+                          "P002,Bob,Lee,456 Clementi Rd,15-05-1990,0,false\n";    // over 21
+        Files.write(Paths.get(filePath1), content1.getBytes());
+        System.out.println("File used for testing: " + Paths.get(filePath1).toAbsolutePath());
     }
 
     @Test
@@ -88,41 +95,39 @@ public class PersonTest {
 
     @Test
     public void testAddDemeritPointsValid() {
-        Person p = new Person("P001", "Alice", "Tan", "123 Orchard Rd", "01-01-2005", "0", false);
-        String result = p.addDemeritPoints("15-05-2024", 3);
-        assertEquals("Success", result, "Expected Success message");
+        Person person = new Person();
+        String result = person.addDemeritPoints("P001", "15-05-2024", 3, filePath1);
+        assertEquals("Success", result, "Valid date and points should succeed");
     }
 
     @Test
-    public void testAddDemeritPointsInvalidDate() {
-        Person p = new Person("P001", "Alice", "Tan", "123 Orchard Rd", "01-01-2005", "0", false);
-        String result = p.addDemeritPoints("2024-05-15", 3);
-        assertTrue(result.contains("Failed") || result.contains("Invalid date"), "Expected failure due to bad date");
+    public void testAddDemeritPointsInvalidDateFormat() {
+        Person person = new Person();
+        String result = person.addDemeritPoints("P001", "2024-05-15", 3, filePath1);
+        assertTrue(result.contains("Failed"), "Invalid date format should fail");
     }
 
     @Test
     public void testAddDemeritPointsInvalidPoints() {
-        Person p = new Person("P001", "Alice", "Tan", "123 Orchard Rd", "01-01-2005", "0", false);
-        String result = p.addDemeritPoints("15-05-2024", 9);
-        assertTrue(result.contains("Failed") || result.contains("Invalid points"), "Expected failure due to invalid points");
+        Person person = new Person();
+        String result = person.addDemeritPoints("P001", "15-05-2024", 7, filePath1);
+        assertTrue(result.contains("Failed"), "Points > 6 should fail");
     }
 
     @Test
     public void testUnderageSuspension() {
-        Person p = new Person("P001", "Alice", "Tan", "123 Orchard Rd", "01-01-2005", "0", false);
-        p.addDemeritPoints("15-05-2024", 3);
-        p.addDemeritPoints("01-06-2024", 3);
-        p.addDemeritPoints("01-07-2024", 2);
-        assertTrue(p.isSuspended(), "Underage person with 8 points should be suspended");
+        Person person = new Person();
+        person.addDemeritPoints("P001", "01-01-2024", 4, filePath1);
+        person.addDemeritPoints("P001", "02-01-2024", 3, filePath1);
+        assertTrue(person.isSuspended(), "Under 21 with >6 points in 2 years should be suspended");
     }
 
     @Test
     public void testAdultSuspension() {
-        Person p = new Person("P002", "Bob", "Lee", "456 Clementi Rd", "01-01-1990", "0", false);
-        p.addDemeritPoints("15-05-2024", 5);
-        p.addDemeritPoints("01-06-2024", 5);
-        p.addDemeritPoints("01-07-2024", 4);
-        assertTrue(p.isSuspended(), "Adult with 14 points should be suspended");
+        Person person = new Person();
+        person.addDemeritPoints("P002", "01-01-2024", 6, filePath1);
+        person.addDemeritPoints("P002", "02-01-2024", 6, filePath1);
+        person.addDemeritPoints("P002", "03-01-2024", 6, filePath1);
+        assertTrue(person.isSuspended(), "Adult with >12 points in 2 years should be suspended");
     }
-
 }
