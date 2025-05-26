@@ -130,22 +130,22 @@ public class PersonFileHandler {
         person.setBirthdate(parts[8]);
         
         // Process demeritPoints
-                String demeritPointsStr = parts[9];
-                HashMap<Date, Integer> demeritPoints = new HashMap<>();
-                if (!demeritPointsStr.equals("[]")) {
-                    System.out.println(demeritPointsStr);
-        //            String[] entries = demeritPointsStr.substring(1, demeritPointsStr.length() - 1).split(",");
-                    System.out.printf("demeritPointsStr: %s\n",demeritPointsStr.replaceAll("\\\\[\\\\[|\\\\]\\\\]", ""));
-                    String[] entries = demeritPointsStr.replaceAll("[\\[\\]\\{\\}]", "").split("],\\[");
-                    for (String entry : entries) {
-                        System.out.printf("Entry: %s\n",entry);
-                        String[] keyValue = entry.split(",");
-                        Date date = DATE_FORMAT.parse(keyValue[0]);
-                        int points = Integer.parseInt(keyValue[1]);
-                        demeritPoints.put(date, points);
-                    }
-                }
-                person.setDemeritPoints(demeritPoints);
+        String demeritPointsStr = parts[9];
+        HashMap<Date, Integer> demeritPoints = new HashMap<>();
+        if (!demeritPointsStr.equals("[]")) {
+            System.out.println(demeritPointsStr);
+//            String[] entries = demeritPointsStr.substring(1, demeritPointsStr.length() - 1).split(",");
+            System.out.printf("demeritPointsStr: %s\n",demeritPointsStr.replaceAll("\\\\[\\\\[|\\\\]\\\\]", ""));
+            String[] entries = demeritPointsStr.replaceAll("[\\[\\]\\{\\}]", "").split("],\\[");
+            for (String entry : entries) {
+                System.out.printf("Entry: %s\n",entry);
+                String[] keyValue = entry.split(",");
+                Date date = DATE_FORMAT.parse(keyValue[0]);
+                int points = Integer.parseInt(keyValue[1]);
+                demeritPoints.put(date, points);
+            }
+        }
+        person.setDemeritPoints(demeritPoints);
        
         
         // Process suspension status
