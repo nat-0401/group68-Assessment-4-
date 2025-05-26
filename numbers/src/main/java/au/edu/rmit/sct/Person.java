@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -268,67 +269,109 @@ public class Person {
     }
     
 
-    public String addDemeritPoints(String offenseDate, int points) {
-        // Condition 1: The format of the date of the offense should follow DD-MM-YYYY
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        sdf.setLenient(false);
-        
-        Date offense;
-        Date birth;
+    public String addDemeritPoints(String personId, String offenseDateStr, int points, String filePath1) {
+        // Validate date format: DD-MM-YYYY
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate offenseDate;
+        try {
+            offenseDate = LocalDate.parse(offenseDateStr, formatter);
+        } catch (DateTimeParseException e) {
+            return "Failed: Invalid date format";
+        }
+
+        // Validate points range
+        if (points < 1 || points > 6) {
+            return "Failed: Points must be between 1 and 6";
+        }
 
         try {
-            offense = sdf.parse(offenseDate);
-            birth = sdf.parse(birthdate);
-        } catch (ParseException e) {
-            return "Failed"; // Fails if offense date or birthdate is not in correct format
-        }
+            List<String> lines = Files.readAllLines(Paths.get(filePath1));
+            List<String> updatedLines = new ArrayList<>();
+            boolean personFound = false;
 
-        // Condition 2: Points must be a whole number between 1-6
-        if (points < 1 || points > 6) {
-            return "Failed";
-        }
+            for (String line : lines) {
+                String[] parts = line.split(",");
+                if (parts.length < 7) {
+                    updatedLines.add(line);  // keep line if format unexpected
+                    continue;
+                }
 
-        // Add to demeritPoints map
-        demeritPoints.put(offense, points);
+                String id = parts[0];
+                String firstName = parts[1];
+                String lastName = parts[2];
+                String address = parts[3];
+                String birthdayStr = parts[4];  // format: DD-MM-YYYY assumed
+                String totalPointsStr = parts[5];
+                String suspendedStr = parts[6];
 
-        // Calculate age at offense date
-        Calendar birthCal = Calendar.getInstance();
-        Calendar offenseCal = Calendar.getInstance();
-        birthCal.setTime(birth);
-        offenseCal.setTime(offense);
+                if (!id.equals(personId)) {
+                    // Not this person, keep the line unchanged
+                    updatedLines.add(line);
+                    continue;
+                }
 
-        int age = offenseCal.get(Calendar.YEAR) - birthCal.get(Calendar.YEAR);
-        if (birthCal.get(Calendar.MONTH) > offenseCal.get(Calendar.MONTH) ||
-            (birthCal.get(Calendar.MONTH) == offenseCal.get(Calendar.MONTH) &&
-            birthCal.get(Calendar.DAY_OF_MONTH) > offenseCal.get(Calendar.DAY_OF_MONTH))) {
-            age--; // Adjust if birthday hasn't occurred yet this year
-        }
+                personFound = true;
 
-        // Condition 3: Suspension logic based on age
-        int totalPoints = 0;
-        Calendar twoYearsAgo = (Calendar) offenseCal.clone();
-        twoYearsAgo.add(Calendar.YEAR, -2);
+                // Parse birthday
+                LocalDate birthday;
+                try {
+                    birthday = LocalDate.parse(birthdayStr, formatter);
+                } catch (DateTimeParseException e) {
+                    return "Failed: Invalid birthday format in file";
+                }
 
-        for (Date date : demeritPoints.keySet()) {
-            if (!date.before(twoYearsAgo.getTime()) && !date.after(offense)) {
-                totalPoints += demeritPoints.get(date);
+                // Calculate age at offense date
+                int age = Period.between(birthday, offenseDate).getYears();
+
+                // Collect offenses and points within last 2 years
+                // For simplicity, let's assume totalPointsStr holds total points within last 2 years.
+                // To be more accurate, you'd need a detailed record of offenses (date + points),
+                // but here we simulate by updating the total points.
+
+                int currentTotalPoints;
+                try {
+                    currentTotalPoints = Integer.parseInt(totalPointsStr);
+                } catch (NumberFormatException e) {
+                    currentTotalPoints = 0;  // assume 0 if bad data
+                }
+
+                int newTotalPoints = currentTotalPoints + points;
+
+                // Determine suspension
+                boolean suspended = false;
+                if (age < 21 && newTotalPoints > 6) {
+                    suspended = true;
+                } else if (age >= 21 && newTotalPoints > 12) {
+                    suspended = true;
+                }
+
+                this.isSuspended = suspended;
+
+                // Rebuild updated line
+                String updatedLine = String.join(",",
+                        id,
+                        firstName,
+                        lastName,
+                        address,
+                        birthdayStr,
+                        Integer.toString(newTotalPoints),
+                        Boolean.toString(suspended));
+                updatedLines.add(updatedLine);
             }
-        }
 
-        if (age < 21 && totalPoints > 6) {
-            isSuspended = true;
-        } else if (age >= 21 && totalPoints > 12) {
-            isSuspended = true;
-        }
+            if (!personFound) {
+                return "Failed: Person ID not found";
+            }
 
-        // Append to file
-        try (FileWriter fw = new FileWriter("demeritPoints.txt", true)) {
-            fw.write(personID + "|" + offenseDate + "|" + points + "\n");
+            // Write all lines back to file
+            Files.write(Paths.get(filePath1), updatedLines);
+
+            return "Success";
+
         } catch (IOException e) {
-            return "Failed"; // File write error
+            e.printStackTrace();
+            return "Failed: IO Error";
         }
-
-        return "Success";
     }
 }
 
