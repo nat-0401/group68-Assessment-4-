@@ -266,5 +266,69 @@ public class Person {
         LocalDate currentDate = LocalDate.now();
         return Period.between(birthDate, currentDate).getYears();
     }
+    
+
+    public String addDemeritPoints(String offenseDate, int points) {
+        // Condition 1: The format of the date of the offense should follow DD-MM-YYYY
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        sdf.setLenient(false);
+        
+        Date offense;
+        Date birth;
+
+        try {
+            offense = sdf.parse(offenseDate);
+            birth = sdf.parse(birthdate);
+        } catch (ParseException e) {
+            return "Failed"; // Fails if offense date or birthdate is not in correct format
+        }
+
+        // Condition 2: Points must be a whole number between 1-6
+        if (points < 1 || points > 6) {
+            return "Failed";
+        }
+
+        // Add to demeritPoints map
+        demeritPoints.put(offense, points);
+
+        // Calculate age at offense date
+        Calendar birthCal = Calendar.getInstance();
+        Calendar offenseCal = Calendar.getInstance();
+        birthCal.setTime(birth);
+        offenseCal.setTime(offense);
+
+        int age = offenseCal.get(Calendar.YEAR) - birthCal.get(Calendar.YEAR);
+        if (birthCal.get(Calendar.MONTH) > offenseCal.get(Calendar.MONTH) ||
+            (birthCal.get(Calendar.MONTH) == offenseCal.get(Calendar.MONTH) &&
+            birthCal.get(Calendar.DAY_OF_MONTH) > offenseCal.get(Calendar.DAY_OF_MONTH))) {
+            age--; // Adjust if birthday hasn't occurred yet this year
+        }
+
+        // Condition 3: Suspension logic based on age
+        int totalPoints = 0;
+        Calendar twoYearsAgo = (Calendar) offenseCal.clone();
+        twoYearsAgo.add(Calendar.YEAR, -2);
+
+        for (Date date : demeritPoints.keySet()) {
+            if (!date.before(twoYearsAgo.getTime()) && !date.after(offense)) {
+                totalPoints += demeritPoints.get(date);
+            }
+        }
+
+        if (age < 21 && totalPoints > 6) {
+            isSuspended = true;
+        } else if (age >= 21 && totalPoints > 12) {
+            isSuspended = true;
+        }
+
+        // Append to file
+        try (FileWriter fw = new FileWriter("demeritPoints.txt", true)) {
+            fw.write(personID + "|" + offenseDate + "|" + points + "\n");
+        } catch (IOException e) {
+            return "Failed"; // File write error
+        }
+
+        return "Success";
+    }
 }
 
