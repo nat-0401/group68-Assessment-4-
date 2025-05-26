@@ -29,6 +29,18 @@ public class PersonTest {
     }
 
     @Test
+	void testAddPersonFirst2Characters() {
+		//the first two characters should be numbers between 2-9
+		Person tp = new Person("abs_d%&fAB", "Grace", "Geng",
+			    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
+			    "15-11-1990, 3,15-12-1990, 3",
+			    true);
+         boolean result = assertEquals(false, tp.addPerson());
+		System.out.println("testAddPersonFirst2Characters returned: " + result);
+        assertFalse(result);
+	}
+
+    @Test
     public void testUpdateAddressForUnder18() {
         Person person = new Person();
         boolean result = person.updatePersonalDetails(
