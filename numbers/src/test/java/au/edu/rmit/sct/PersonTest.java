@@ -167,4 +167,75 @@ public class PersonTest {
             assertTrue(person.isSuspended());
         }
     }
+    
+    @TestMethodOrder(OrderAnnotation.class)
+    @Nested
+    
+    class AddPersonTests {
+		private final String filePath = "Person.txt";
+	@Test
+	@Order(1)
+	void testAddPerson1() {
+		//the last two characters should be uppercase letters A-Z
+		Person tp1 = new Person("56s_d%&fab", "Grace", "Geng",
+			    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
+			    "15-11-1990, 3,15-12-1990, 3",
+			    true);
+		boolean result = tp1.addPerson(filePath);
+		assertFalse(result);
+		System.out.println("test case1 result:" + result);
+	}
+	
+	@Test
+	@Order(2)
+	void testAddPerson2() {
+		//the first two characters should be numbers between 2-9
+		Person tp2 = new Person("abs_d%&fAB", "Grace", "Geng",
+			    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
+			    "15-11-1990, 3,15-12-1990, 3",
+			    true);
+		boolean result = tp2.addPerson(filePath);
+		assertFalse(result);
+		System.out.println("test case2 result:" + result);
+	}
+	
+	@Test
+	@Order(3)
+	void testAddPerson3() {
+		//the state should be Victoria
+		Person tp3 = new Person("56s_d%&fAB", "Grace", "Geng",
+			    "32|Highland Street|Melbourne|Queensland|Australia",  "15-11-1990", 
+			    "15-11-1990, 3,15-12-1990, 3",
+			    true);
+		boolean result = tp3.addPerson(filePath);
+		assertFalse(result);
+		System.out.println("test case3 result:" + result);
+	}
+	
+	@Test
+	@Order(4)
+	void testAddPerson4() {
+		//the personID should be 10 characters long
+		Person tp4 = new Person("56s_d%&fA", "Grace", "Geng",
+			    "32|Highland Street|Melbourne|Queensland|Australia",  "15-11-1990", 
+			    "15-11-1990, 3,15-12-1990, 3",
+			    true);
+		boolean result = tp4.addPerson(filePath);
+		assertFalse(result);
+		System.out.println("test case4 result:" + result);
+	}
+	
+	@Test
+	@Order(5)
+	void testAddPerson5() {
+		//the format of birthdate should follow DD-MM-YYYY
+		Person tp5 = new Person("56s_d%&fA", "Grace", "Geng",
+			    "32|Highland Street|Melbourne|Queensland|Australia",  "1990-11-15", 
+			    "15-11-1990, 3,15-12-1990, 3",
+			    true);
+		boolean result = tp5.addPerson(filePath);
+		assertFalse(result);
+		System.out.println("test case5 result:" + result);
+	}
+    }
 }
