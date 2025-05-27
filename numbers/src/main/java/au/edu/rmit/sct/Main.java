@@ -9,7 +9,8 @@ public class Main {
 			    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
 			    "15-11-1990, 3,15-12-1990, 3",
 			    true);
-        tp.addPerson();
+        boolean isadded = tp.addPerson();
+	System.out.println("AddPerson successful? " + isadded);
 
         //FUNCTION 2
         String filePath = "persons.txt";
