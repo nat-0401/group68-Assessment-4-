@@ -29,78 +29,78 @@ public class Person {
     private boolean isSuspended;
     
     public String getPersonID() {
-        return personID;
-    }
-    
-    public void setPersonID(String personID) {
-        this.personID = personID;
-    }
-    
-    public String getFirstName() {
-        return firstName;
-    }
-    
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    
-    public String getLastName() {
-        return lastName;
-    }
-    
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    
-    public String getAddress() {
-        return address;
-    }
-    
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    
-    public String getBirthdate() {
-        return birthdate;
-    }
-    
-    public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
-    }
-    
-    public HashMap<Date, Integer> getDemeritPoints() {
-		  return demeritPoints;
-		 }
+		return personID;
+	}
+
+	public void setPersonID(String personID) {
+		this.personID = personID;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(String birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	public HashMap<Date, Integer> getDemeritPoints() {
+		return demeritPoints;
+	}
 
 	public void setDemeritPoints(String input) {
-		  this.demeritPoints = convertStringToHashMap(input);
-		}
-    
-    public boolean isSuspended() {
-        return isSuspended;
-    }
-    
-    public void setSuspended(boolean isSuspended) {
-        this.isSuspended = isSuspended;
-    }
-    
-        public Person() {
-            
-        }
-    
-    public Person(String personID, String firstName, String lastName,
-                String address,  String birthdate, String demeritPoints,
-                boolean isSuspended) {
-                this.personID = personID;
-                this.firstName = firstName;
-                this.lastName = lastName;
-                this.address = address;
-                this.birthdate = birthdate;
-                this.demeritPoints = convertStringToHashMap(demeritPoints);
-                this.isSuspended = isSuspended;
-                }
-    
-    public static HashMap<Date, Integer> convertStringToHashMap(String input) {
+		this.demeritPoints = convertStringToHashMap(input);
+	}
+
+	public boolean isSuspended() {
+		return isSuspended;
+	}
+	
+	public void setSuspended(boolean isSuspended) {
+		this.isSuspended = isSuspended;
+	}
+
+	public Person() {
+		
+	}
+	
+	public Person(String personID,	String firstName, String lastName,
+			String address,  String birthdate,	String demeritPoints,
+			boolean isSuspended) {
+		this.personID = personID;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.birthdate = birthdate;
+		this.demeritPoints = convertStringToHashMap(demeritPoints);
+		this.isSuspended = isSuspended;
+	}
+	
+	public static HashMap<Date, Integer> convertStringToHashMap(String input) {
         HashMap<Date, Integer> map = new HashMap<>();
         
         String[] pairs = input.split(",");
@@ -113,7 +113,7 @@ public class Person {
         for (int i = 0; i < pairs.length; i += 2) {
             try {
                 String dateStr = pairs[i];
-                int points = Integer.parseInt(pairs[i + 1]);
+                int points = Integer.parseInt(pairs[i + 1].trim());
                 Date date = dateFormat.parse(dateStr);
                 map.put(date, points);
             } catch (ParseException e) {
@@ -123,56 +123,87 @@ public class Person {
             }
         }
         
+       
         return map;
     }
-    
-    public boolean addPerson() {
-        //Condition 1: personID should be exactly 10 characters long;
-        if (personID.length() != 10)
-            return false;
-        //the first two characters should be numbers between 2 and 9;
-        if (!personID.substring(0, 2).matches("[2-9]{2}"))
-            return false;
-        //there should be at least two special characters between characters 3 and 8;
-        String middle = personID.substring(2, 8);
-        int specialCount = 0;
-        for (char c : middle.toCharArray()) {
-            if (!Character.isLetterOrDigit(c)) specialCount++;
+
+	public boolean addPerson(){
+		// Condition 1: personID should be exactly 10 characters long;
+		if (personID.length() != 10)
+			return false;
+		// the first two characters should be numbers between 2 and 9;
+		if (!personID.substring(0, 2).matches("[2-9]{2}"))
+			return false;
+		// there should be at least two special characters between characters 3 and 8;
+		String middle = personID.substring(2, 8);
+		int specialCount = 0;
+		for (char c : middle.toCharArray()) {
+			if (!Character.isLetterOrDigit(c))
+				specialCount++;
+		}
+		if (specialCount < 2)
+			return false;
+		// the last two characters should be uppercase letters (A-Z);
+		if (!personID.substring(8).matches("[A-Z]{2}"))
+			return false;
+		// Condition 2: The address of the Person should follow the following format:
+		// Street Number|Street|City|State|Country;
+		// The State should be only Victoria;
+		if (address == null)
+			return false;
+
+		String[] parts = address.split("\\|");
+		if (parts.length != 5) {
+			return false;
+		}
+
+		// Check state
+		if (!parts[3].trim().equals("Victoria")) {
+			return false;
+		}
+
+		// Condition 3: The format of the birthdate of the person should follow the
+		// following format: DD-MM-YYYY;
+		if (birthdate == null) {
+			return false;
+		}
+		// Check format DD-MM-YYYY
+		Pattern pattern = Pattern.compile("^(0[1-9]|[12][0-9]|3[01])\\-(0[1-9]|1[0-2])\\-(\\d{4})$");
+		Matcher matcher = pattern.matcher(birthdate);
+		if( ! matcher.matches() ) {
+			return false;
+		}
+
+		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+		String filePath = "./Person.txt";
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+			StringBuilder sb = new StringBuilder();
+	        sb.append(this.personID).append("|")
+	          .append(this.firstName).append("|")
+	          .append(this.lastName).append("|")
+	          .append(this.address).append("|") // Address is a string in format "streetNumber|street|city|state|country"
+	          .append(this.birthdate).append("|");
+	        
+	        // Process demeritPoints
+	        for (Map.Entry<Date, Integer> entry : this.demeritPoints.entrySet()) {
+	            sb.append(DATE_FORMAT.format(entry.getKey())).append(",").append(entry.getValue()).append(",");
+	        }
+	        if (!this.demeritPoints.isEmpty()) {
+	            sb.deleteCharAt(sb.length() - 1); // Remove the last comma
+	        }
+	        sb.append("|")
+	          .append(this.isSuspended);
+			writer.write(sb.toString());
+            writer.newLine();
+            writer.close();
         }
-        if (specialCount < 2)
-            return false;
-        //the last two characters should be uppercase letters (A-Z);
-        if (!personID.substring(8).matches("[A-Z]{2}"))
-            return false;
-        //Condition 2: The address of the Person should follow the following format: Street Number|Street|City|State|Country;
-        // The State should be only Victoria;
-            if (address == null)
-                return false;
-    
-            String[] parts = address.split("\\|");
-            if (parts.length != 5) {
-                return false;
-            }
-    
-            // Check state
-            //String state = parts[3].trim();
-            if (!(parts[3].trim().equalsIgnoreCase("Victoria"))) {
-                return false;
-            }
-        //Condition 3: The format of the birthdate of the person should follow the following format: DD-MM-YYYY;
-        
-            if (birthdate == null) {
-            return false;
-            }
-    
-            // Check format DD-MM-YYYY
-            Pattern pattern = Pattern.compile("^(0[1-9]|[12][0-9]|3[01])\\-(0[1-9]|1[0-2])\\-(\\d{4})$");
-            Matcher matcher = pattern.matcher(birthdate);
-            if (!matcher.matches()) {
-                return false;
-            }
-            return true;
-    }
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return true;
+	}
     
     
     public boolean updatePersonalDetails(String currentId, String newId, String newFirstName, String newLastName,
