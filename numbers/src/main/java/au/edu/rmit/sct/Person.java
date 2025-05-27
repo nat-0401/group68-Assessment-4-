@@ -127,7 +127,7 @@ public class Person {
         return map;
     }
 
-	public boolean addPerson(){
+	public boolean addPerson(String filePath){
 		// Condition 1: personID should be exactly 10 characters long;
 		if (personID.length() != 10)
 			return false;
@@ -175,7 +175,6 @@ public class Person {
 		}
 
 		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-		String filePath = "./Person.txt";
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
 			StringBuilder sb = new StringBuilder();
 	        sb.append(this.personID).append("|")
