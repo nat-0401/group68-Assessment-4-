@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="au.edu.rmit.sct.PersonTest" time="0.054" tests="0" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="au.edu.rmit.sct.PersonTest$UpdatePersonalDetailsTests" time="0.017" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -59,4 +59,92 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
+  <testcase name="testUpdateAddressForUnder18" classname="au.edu.rmit.sct.PersonTest$UpdatePersonalDetailsTests" time="0.01">
+    <system-out><![CDATA[File used for testing: /Users/ericapang/Documents/Assignment 4/numbers/persons.txt
+Lines loaded from file:
+12345,John,Smith,123 Main St,2000-05-15,3,false
+23456,Jane,Smith,456 Park Ave,2010-10-20,1,false
+Processing record with ID: 23456
+Old details:
+ID: 23456
+First Name: Jane
+Last Name: Smith
+Address: 456 Park Ave
+Birthday: 2010-10-20
+Calculated age: 14
+Update failed: Under 18 cannot change address.
+testUpdateAddressForUnder18 returned: false
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateBirthdayAndOtherDetails" classname="au.edu.rmit.sct.PersonTest$UpdatePersonalDetailsTests" time="0.001">
+    <system-out><![CDATA[File used for testing: /Users/ericapang/Documents/Assignment 4/numbers/persons.txt
+Lines loaded from file:
+12345,John,Smith,123 Main St,2000-05-15,3,false
+23456,Jane,Smith,456 Park Ave,2010-10-20,1,false
+Processing record with ID: 12345
+Old details:
+ID: 12345
+First Name: John
+Last Name: Smith
+Address: 123 Main St
+Birthday: 2000-05-15
+Calculated age: 25
+Birthday changed.
+Update failed: When birthday changes, other details must remain unchanged.
+testUpdateBirthdayAndOtherDetails returned: false
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateLastNameOnly" classname="au.edu.rmit.sct.PersonTest$UpdatePersonalDetailsTests" time="0.001">
+    <system-out><![CDATA[File used for testing: /Users/ericapang/Documents/Assignment 4/numbers/persons.txt
+Lines loaded from file:
+12345,John,Smith,123 Main St,2000-05-15,3,false
+23456,Jane,Smith,456 Park Ave,2010-10-20,1,false
+Processing record with ID: 12345
+Old details:
+ID: 12345
+First Name: John
+Last Name: Smith
+Address: 123 Main St
+Birthday: 2000-05-15
+Calculated age: 25
+Updating details...
+File updated successfully.
+testUpdateLastNameOnly returned: true
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateIdWithEvenStartingDigit" classname="au.edu.rmit.sct.PersonTest$UpdatePersonalDetailsTests" time="0.0">
+    <system-out><![CDATA[File used for testing: /Users/ericapang/Documents/Assignment 4/numbers/persons.txt
+Lines loaded from file:
+12345,John,Smith,123 Main St,2000-05-15,3,false
+23456,Jane,Smith,456 Park Ave,2010-10-20,1,false
+Processing record with ID: 23456
+Old details:
+ID: 23456
+First Name: Jane
+Last Name: Smith
+Address: 456 Park Ave
+Birthday: 2010-10-20
+Calculated age: 14
+Update failed: Even-digit starting ID cannot be changed.
+testUpdateIdWithEvenStartingDigit returned: false
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateMultipleFieldsExceptBirthdayForAdult" classname="au.edu.rmit.sct.PersonTest$UpdatePersonalDetailsTests" time="0.001">
+    <system-out><![CDATA[File used for testing: /Users/ericapang/Documents/Assignment 4/numbers/persons.txt
+Lines loaded from file:
+12345,John,Smith,123 Main St,2000-05-15,3,false
+23456,Jane,Smith,456 Park Ave,2010-10-20,1,false
+Processing record with ID: 12345
+Old details:
+ID: 12345
+First Name: John
+Last Name: Smith
+Address: 123 Main St
+Birthday: 2000-05-15
+Calculated age: 25
+Updating details...
+File updated successfully.
+testUpdateMultipleFieldsExceptBirthdayForAdult returned: true
+]]></system-out>
+  </testcase>
 </testsuite>

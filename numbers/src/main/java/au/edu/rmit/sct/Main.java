@@ -14,7 +14,7 @@ public class Main {
 
         System.out.println("Working directory: " + System.getProperty("user.dir"));
 
-        //FUNCTION3
+        //FUNCTION 3
         Person person1 = new Person();
         String filePath1 = "demeritPoints.txt";
 

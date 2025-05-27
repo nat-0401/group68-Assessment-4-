@@ -268,24 +268,26 @@ public class Person {
     
 
     public String addDemeritPoints(String personId, String offenseDateStr, int points, String filePath1) {
-        // Validate date format: DD-MM-YYYY
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate offenseDate;
-        try {
-            offenseDate = LocalDate.parse(offenseDateStr, formatter);
-        } catch (DateTimeParseException e) {
-            return "Failed: Invalid date format";
-        }
-
-        // Validate points range
-        if (points < 1 || points > 6) {
-            return "Failed: Points must be between 1 and 6";
-        }
-
         try {
             List<String> lines = Files.readAllLines(Paths.get(filePath1));
+            System.out.println("Lines loaded from file:");
+            lines.forEach(System.out::println);
             List<String> updatedLines = new ArrayList<>();
             boolean personFound = false;
+
+            //testAddDemeritPointsValid(), testAddDemeritPointsInvalidPoints()
+            if (points < 1 || points > 6) {
+                return "Failed";
+            }
+
+            //testAddDemeritPointsInvalidDateFormat()
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate offenseDate;
+            try {
+                offenseDate = LocalDate.parse(offenseDateStr, formatter);
+            } catch (DateTimeParseException e) {
+                return "Failed";
+            }
 
             for (String line : lines) {
                 String[] parts = line.split(",");
@@ -303,19 +305,17 @@ public class Person {
                 String suspendedStr = parts[6];
 
                 if (!id.equals(personId)) {
-                    // Not this person, keep the line unchanged
                     updatedLines.add(line);
                     continue;
                 }
 
                 personFound = true;
 
-                // Parse birthday
                 LocalDate birthday;
                 try {
                     birthday = LocalDate.parse(birthdayStr, formatter);
                 } catch (DateTimeParseException e) {
-                    return "Failed: Invalid birthday format in file";
+                    return "Failed";
                 }
 
                 // Calculate age at offense date
@@ -335,7 +335,7 @@ public class Person {
 
                 int newTotalPoints = currentTotalPoints + points;
 
-                // Determine suspension
+                //testUnderageSuspension(), testAdultSuspension()
                 boolean suspended = false;
                 if (age < 21 && newTotalPoints > 6) {
                     suspended = true;
@@ -345,7 +345,6 @@ public class Person {
 
                 this.isSuspended = suspended;
 
-                // Rebuild updated line
                 String updatedLine = String.join(",",
                         id,
                         firstName,
@@ -358,10 +357,9 @@ public class Person {
             }
 
             if (!personFound) {
-                return "Failed: Person ID not found";
+                return "Failed";
             }
 
-            // Write all lines back to file
             Files.write(Paths.get(filePath1), updatedLines);
 
             return "Success";

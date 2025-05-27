@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="au.edu.rmit.sct.PersonTest" time="0.054" tests="0" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="au.edu.rmit.sct.PersonTest$AddDemeritPointsTests" time="0.031" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -7,7 +7,6 @@
     <property name="java.vm.vendor" value="Homebrew"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.vendor.url" value="https://github.com/Homebrew/homebrew-core/issues"/>
-    <property name="user.timezone" value="Australia/Melbourne"/>
     <property name="os.name" value="Mac OS X"/>
     <property name="java.vm.specification.version" value="23"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
@@ -59,4 +58,58 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
+  <testcase name="testAddDemeritPointsValid" classname="au.edu.rmit.sct.PersonTest$AddDemeritPointsTests" time="0.018">
+    <system-out><![CDATA[File used for testing: /Users/ericapang/Documents/Assignment 4/numbers/demeritPoints.txt
+Lines loaded from file:
+P001,Alice,Tan,123 Orchard Rd,15-05-2005,0,false
+P002,Bob,Lee,456 Clementi Rd,15-05-1990,0,false
+testAddDemeritPointsValid returned: Success
+
+]]></system-out>
+  </testcase>
+  <testcase name="testAddDemeritPointsInvalidDateFormat" classname="au.edu.rmit.sct.PersonTest$AddDemeritPointsTests" time="0.002">
+    <system-out><![CDATA[File used for testing: /Users/ericapang/Documents/Assignment 4/numbers/demeritPoints.txt
+Lines loaded from file:
+P001,Alice,Tan,123 Orchard Rd,15-05-2005,0,false
+P002,Bob,Lee,456 Clementi Rd,15-05-1990,0,false
+testAddDemeritPointsInvalidDateFormat returned: Failed
+
+]]></system-out>
+  </testcase>
+  <testcase name="testAddDemeritPointsInvalidPoints" classname="au.edu.rmit.sct.PersonTest$AddDemeritPointsTests" time="0.001">
+    <system-out><![CDATA[File used for testing: /Users/ericapang/Documents/Assignment 4/numbers/demeritPoints.txt
+Lines loaded from file:
+P001,Alice,Tan,123 Orchard Rd,15-05-2005,0,false
+P002,Bob,Lee,456 Clementi Rd,15-05-1990,0,false
+testAddDemeritPointsInvalidPoints returned: Failed
+
+]]></system-out>
+  </testcase>
+  <testcase name="testUnderageSuspension" classname="au.edu.rmit.sct.PersonTest$AddDemeritPointsTests" time="0.002">
+    <system-out><![CDATA[File used for testing: /Users/ericapang/Documents/Assignment 4/numbers/demeritPoints.txt
+Lines loaded from file:
+P001,Alice,Tan,123 Orchard Rd,15-05-2005,0,false
+P002,Bob,Lee,456 Clementi Rd,15-05-1990,0,false
+Lines loaded from file:
+P001,Alice,Tan,123 Orchard Rd,15-05-2005,4,false
+P002,Bob,Lee,456 Clementi Rd,15-05-1990,0,false
+testUnderageSuspension returned: Success
+
+]]></system-out>
+  </testcase>
+  <testcase name="testAdultSuspension" classname="au.edu.rmit.sct.PersonTest$AddDemeritPointsTests" time="0.003">
+    <system-out><![CDATA[File used for testing: /Users/ericapang/Documents/Assignment 4/numbers/demeritPoints.txt
+Lines loaded from file:
+P001,Alice,Tan,123 Orchard Rd,15-05-2005,0,false
+P002,Bob,Lee,456 Clementi Rd,15-05-1990,0,false
+Lines loaded from file:
+P001,Alice,Tan,123 Orchard Rd,15-05-2005,0,false
+P002,Bob,Lee,456 Clementi Rd,15-05-1990,6,false
+Lines loaded from file:
+P001,Alice,Tan,123 Orchard Rd,15-05-2005,0,false
+P002,Bob,Lee,456 Clementi Rd,15-05-1990,12,false
+testAdultSuspension returned: Success
+
+]]></system-out>
+  </testcase>
 </testsuite>
