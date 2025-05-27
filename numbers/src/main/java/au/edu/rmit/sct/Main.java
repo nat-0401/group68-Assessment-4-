@@ -11,6 +11,7 @@ public class Main {
 			    true);
         boolean isadded = tp.addPerson();
 	System.out.println("AddPerson successful? " + isadded);
+	System.out.println("Personal information is added to file /Person.txt")
 
         //FUNCTION 2
         String filePath = "persons.txt";
