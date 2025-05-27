@@ -27,6 +27,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PersonTest {
+    //FUNCTION 2
     @TestMethodOrder(OrderAnnotation.class)
     @Nested
     class UpdatePersonalDetailsTests {
@@ -112,147 +113,213 @@ public class PersonTest {
         }
     }
 
+    //FUNCTION 3
     @TestMethodOrder(OrderAnnotation.class)
     @Nested
     class AddDemeritPointsTests {
 
-        private final String filePath1 = "demeritPoints.txt";
-
-        @BeforeEach
-        public void resetFile() throws IOException {
-            List<String> originalLines = List.of(
-                "P001,Alice,Tan,123 Orchard Rd,15-05-2005,0,false",
-                "P002,Bob,Lee,456 Clementi Rd,15-05-1990,0,false"
-            );
-            Files.write(Paths.get(filePath1), originalLines);
-            System.out.println("File used for testing: " + Paths.get(filePath1).toAbsolutePath());
-        }
-
-
         @Test
         @Order(1)
-        public void testAddDemeritPointsValid() {
-            Person person = new Person();
-            String result = person.addDemeritPoints("P001", "15-05-2024", 3, filePath1);
-            System.out.println("testAddDemeritPointsValid returned: " + result + "\n");
-            assertTrue(result.contains("Success"));
+        public void testAddDemeritPoints1() {
+            //Test Case 1: Check with invalid offense date
+            System.out.println("---testAddDemeritPoints1()---");
+                //Test Data 1: yyyy-mm-dd
+                Person person = new Person("A001","Erica","Pang","151 La Trobe St","15-05-2008","2024-01-01,3",false);
+                String result = person.addDemeritPoints();
+
+                //Test Data 2: month out of range
+                Person person2 = new Person("B002","Rui","Geng","332 Caviar St","29-05-2005","31-13-2023,2",false);
+                String result2 = person2.addDemeritPoints();
+
+                //Test Data 3: date > current date (future)
+                Person person3 = new Person("C003","Nathaniel","Kong","481 Garden St","28-05-2010","12-12-2028,4",false);
+                String result3 = person3.addDemeritPoints();
+
+                assertAll("", ()->assertEquals("Failed", result), ()->assertEquals("Failed", result2), ()->assertEquals("Failed", result3));
+                System.out.println("test data 1 result: " + result + " (Error: date format should be dd--mm--yyyy)");
+                System.out.println("test data 2 result: " + result2 + " (Error: month must not exceed 12)");
+                System.out.println("test data 3 result: " + result3 + " (Error: offense date must not be in the future)");
         }
 
         @Test
         @Order(2)
-        public void testAddDemeritPointsInvalidDateFormat() {
-            Person person = new Person();
-            String result = person.addDemeritPoints("P001", "2024-05-15", 3, filePath1);
-            System.out.println("testAddDemeritPointsInvalidDateFormat returned: " + result + "\n");
-            assertTrue(result.contains("Failed"));
+        public void testAddDemeritPoints2() {
+            //Test Case 2: Check with invalid demerit points input
+            System.out.println("---testAddDemeritPoints2()---");
+                //Test Data 1: points < 1
+                Person person = new Person("A001","Erica","Pang","151 La Trobe St","15-05-2008","01-01-2024,0",false);
+                String result = person.addDemeritPoints();
+
+                //Test Data 2: points > 6
+                Person person2 = new Person("B002","Rui","Geng","332 Caviar St","29-05-2005","31-12-2023,7",false);
+                String result2 = person2.addDemeritPoints();
+
+                //Test Data 3: decimal
+                Person person3 = new Person("C003","Nathaniel","Kong","481 Garden St","28-05-2010","12-12-2023,5.5",false);
+                String result3 = person3.addDemeritPoints();
+
+                //Test Data 4: empty variable
+                Person person4 = new Person("D004","Jerry","Lim","293 Salmon St","05-07-1999","12-12-2023",false);
+                String result4 = person4.addDemeritPoints();
+
+                assertAll("", ()->assertEquals("Failed", result), ()->assertEquals("Failed", result2), ()->assertEquals("Failed", result3), ()->assertEquals("Failed", result4));
+                System.out.println("test data 1 result: " + result + " (Error: point must not be lesser than 1)");
+                System.out.println("test data 2 result: " + result2 + " (Error: point must not be greater than 6)");
+                System.out.println("test data 3 result: " + result3 + " (Error: only whole numbers are accepted)");
+                System.out.println("test data 4 result: " + result4 + " (Error: point(string) must not be empty)");
         }
 
         @Test
         @Order(3)
-        public void testAddDemeritPointsInvalidPoints() {
-            Person person = new Person();
-            String result = person.addDemeritPoints("P001", "15-05-2024", 7, filePath1);
-            System.out.println("testAddDemeritPointsInvalidPoints returned: " + result + "\n");
-            assertTrue(result.contains("Failed"));
+        public void testAddDemeritPoints3() {            
+            //Test Case 3: Check with valid input, isSuspended not triggered for under 21
+            System.out.println("---testAddDemeritPoints3()---");
+                //Test Data 1: demerits not within 2 years
+                Person person = new Person("A001","Erica","Pang","151 La Trobe St","15-05-2008","01-01-2020,3,01-02-2024,4",false);
+                String result = person.addDemeritPoints();
+
+                //Test Data 2: point <= 6
+                Person person2 = new Person("B002","Rui","Geng","332 Caviar St","29-05-2005","30-12-2023,2,6-03-2025,1,16-06-2024,1",false);
+                String result2 = person2.addDemeritPoints();
+
+                //Test Data 3: point == 6
+                Person person3 = new Person("C003","Nathaniel","Kong","481 Garden St","28-05-2011","12-12-2023,4,7-05-2024,2",false);
+                String result3 = person3.addDemeritPoints();
+
+                assertAll("", ()->assertEquals("Success", result), ()->assertEquals("Success", result2), ()->assertEquals("Success", result3));
+                assertAll("", ()->assertFalse(person.isSuspended()), ()->assertFalse(person2.isSuspended()), ()->assertFalse(person3.isSuspended()));
+                System.out.println("test data 1 result: " + result);
+                System.out.println("isSuspended? " + person.isSuspended());
+                System.out.println("test data 2 result: " + result2);
+                System.out.println("isSuspended? " + person2.isSuspended());
+                System.out.println("test data 3 result: " + result3);
+                System.out.println("isSuspended? " + person3.isSuspended());
         }
 
         @Test
         @Order(4)
-        public void testUnderageSuspension() {
-            Person person = new Person();
-            person.addDemeritPoints("P001", "01-01-2024", 4, filePath1);
-            String result = person.addDemeritPoints("P001", "02-01-2024", 3, filePath1);
-            System.out.println("testUnderageSuspension returned: " + result + "\n");
-            assertTrue(person.isSuspended());
+        public void testAddDemeritPoints4() {
+            //Test Case 4: Check with valid input, isSuspended not triggered for over 21
+            System.out.println("---testAddDemeritPoints4()---");
+                //Test Data 1: demerits not within 2 years
+                Person person = new Person("A001","Erica","Pang","151 La Trobe St","15-05-2000","01-01-2020,6,01-02-2024,6,01-03-2024,1",false);
+                String result = person.addDemeritPoints();
+
+                //Test Data 2: point <= 12
+                Person person2 = new Person("B002","Rui","Geng","332 Caviar St","29-05-2003","31-12-2023,5,6-03-2025,2",false);
+                String result2 = person2.addDemeritPoints();
+
+                //Test Data 3: point == 12
+                Person person3 = new Person("C003","Nathaniel","Kong","481 Garden St","28-05-1997","12-12-2023,6,7-05-2024,6",false);
+                String result3 = person3.addDemeritPoints();
+
+                assertAll("", ()->assertEquals("Success", result), ()->assertEquals("Success", result2), ()->assertEquals("Success", result3));
+                assertAll("", ()->assertFalse(person.isSuspended()), ()->assertFalse(person2.isSuspended()), ()->assertFalse(person3.isSuspended()));
+                System.out.println("test data 1 result: " + result);
+                System.out.println("isSuspended? " + person.isSuspended());
+                System.out.println("test data 2 result: " + result2);
+                System.out.println("isSuspended? " + person2.isSuspended());
+                System.out.println("test data 3 result: " + result3);
+                System.out.println("isSuspended? " + person3.isSuspended());
         }
 
         @Test
         @Order(5)
-        public void testAdultSuspension() {
-            Person person = new Person();
-            person.addDemeritPoints("P002", "01-01-2024", 6, filePath1);
-            person.addDemeritPoints("P002", "02-01-2024", 6, filePath1);
-            String result = person.addDemeritPoints("P002", "03-01-2024", 6, filePath1);
-            System.out.println("testAdultSuspension returned: " + result + "\n");
-            assertTrue(person.isSuspended());
+        public void testAddDemeritPoints5() {
+            //Test Case 5: Check with all valid inputs and isSuspended triggered.
+            System.out.println("---testAddDemeritPoints5()---");
+                //Test Data 1: point > 12, over 21
+                Person person = new Person("A001","Erica","Pang","151 La Trobe St","15-05-2000","01-01-2024,6,01-02-2024,6,01-03-2024,1",false);
+                String result = person.addDemeritPoints();
+
+                 //Test Data 2: point > 6, under 21
+                Person person2 = new Person("B002","Rui","Geng","332 Caviar St","29-05-2009","31-12-2023,5,6-03-2025,2",false);
+                String result2 = person2.addDemeritPoints();
+
+                assertAll("", ()->assertEquals("Success", result), ()->assertEquals("Success", result2));
+                assertAll("", ()->assertTrue(person.isSuspended()), ()->assertTrue(person2.isSuspended()));
+                System.out.println("test data 1 result: " + result);
+                System.out.println("isSuspended? " + person.isSuspended());
+                System.out.println("test data 2 result: " + result2);
+                System.out.println("isSuspended? " + person2.isSuspended());
         }
     }
     
-    
+    //FUNCTION 1
     @TestMethodOrder(OrderAnnotation.class)
     @Nested
-    
     class AddPersonTests {
-		private final String filePath = "Person.txt";
-	@Test
-	@Order(1)
-	void testAddPerson1() {
-		//the last two characters should be uppercase letters A-Z
-		Person tp1 = new Person("56s_d%&fab", "Grace", "Geng",
-			    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
-			    "15-11-1990, 3,15-12-1990, 3",
-			    true);
-		boolean result = tp1.addPerson(filePath);
-		assertFalse(result);
-		System.out.println("testAddPerson1 failed: personID error: the last two characters should be uppercase letters A-Z");
-		System.out.println("test case 1 result: successful!");
-	}
-	
-	@Test
-	@Order(2)
-	void testAddPerson2() {
-		//the first two characters should be numbers between 2-9
-		Person tp2 = new Person("abs_d%&fAB", "Grace", "Geng",
-			    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
-			    "15-11-1990, 3,15-12-1990, 3",
-			    true);
-		boolean result = tp2.addPerson(filePath);
-		assertFalse(result);
-		System.out.println("testAddPerson2 failed: personID error: the first two characters should be numbers between 2-9");
-		System.out.println("test case 2 result: successful!");
-	}
-	
-	@Test
-	@Order(3)
-	void testAddPerson3() {
-		//the state should be Victoria
-		Person tp3 = new Person("56s_d%&fAB", "Grace", "Geng",
-			    "32|Highland Street|Melbourne|Queensland|Australia",  "15-11-1990", 
-			    "15-11-1990, 3,15-12-1990, 3",
-			    true);
-		boolean result = tp3.addPerson(filePath);
-		assertFalse(result);
-		System.out.println("testAddPerson3 failed: the state should be Victoria");
-		System.out.println("test case 3 result: successful!");
-	}
-	
-	@Test
-	@Order(4)
-	void testAddPerson4() {
-		//Correctly add personal information 
-		Person tp4 = new Person("56s_d%&fAB", "Grace", "Geng",
-			    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
-			    "15-11-1990, 3,15-12-1990, 3",
-			    true);
-		boolean result = tp4.addPerson(filePath);
-		assertTrue(result);
-		System.out.println("testAddPerson4 finished: personal information added");
-		System.out.println("test case 4 result: successful!");
-	}
-	
-	@Test
-	@Order(5)
-	void testAddPerson5() {
-		//the format of birthdate should follow DD-MM-YYYY
-		Person tp5 = new Person("56s_d%&fAB", "Grace", "Geng",
-			    "32|Highland Street|Melbourne|Victoria|Australia",  "1990-11-15", 
-			    "15-11-1990, 3,15-12-1990, 3",
-			    true);
-		boolean result = tp5.addPerson(filePath);
-		assertFalse(result);
-		System.out.println("testAddPerson5 failed: the format of birthdate should follow DD-MM-YYYY");
-		System.out.println("test case 5 result: successful!");
-	}
+		        private final String filePath = "Person.txt";
+            
+        @Test
+        @Order(1)
+        void testAddPerson1() {
+            //the last two characters should be uppercase letters A-Z
+            Person tp1 = new Person("56s_d%&fab", "Grace", "Geng",
+                    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
+                    "15-11-1990, 3,15-12-1990, 3",
+                    true);
+            boolean result = tp1.addPerson(filePath);
+            assertFalse(result);
+            System.out.println("testAddPerson1 failed: personID error: the last two characters should be uppercase letters A-Z");
+            System.out.println("test case 1 result: successful!");
+        }
+        
+        @Test
+        @Order(2)
+        void testAddPerson2() {
+            //the first two characters should be numbers between 2-9
+            Person tp2 = new Person("abs_d%&fAB", "Grace", "Geng",
+                    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
+                    "15-11-1990, 3,15-12-1990, 3",
+                    true);
+            boolean result = tp2.addPerson(filePath);
+            assertFalse(result);
+            System.out.println("testAddPerson2 failed: personID error: the first two characters should be numbers between 2-9");
+            System.out.println("test case 2 result: successful!");
+        }
+        
+        @Test
+        @Order(3)
+        void testAddPerson3() {
+            //the state should be Victoria
+            Person tp3 = new Person("56s_d%&fAB", "Grace", "Geng",
+                    "32|Highland Street|Melbourne|Queensland|Australia",  "15-11-1990", 
+                    "15-11-1990, 3,15-12-1990, 3",
+                    true);
+            boolean result = tp3.addPerson(filePath);
+            assertFalse(result);
+            System.out.println("testAddPerson3 failed: the state should be Victoria");
+            System.out.println("test case 3 result: successful!");
+        }
+        
+        @Test
+        @Order(4)
+        void testAddPerson4() {
+            //Correctly add personal information 
+            Person tp4 = new Person("56s_d%&fAB", "Grace", "Geng",
+                    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
+                    "15-11-1990, 3,15-12-1990, 3",
+                    true);
+            boolean result = tp4.addPerson(filePath);
+            assertTrue(result);
+            System.out.println("testAddPerson4 finished: personal information added");
+            System.out.println("test case 4 result: successful!");
+        }
+        
+        @Test
+        @Order(5)
+        void testAddPerson5() {
+            //the format of birthdate should follow DD-MM-YYYY
+            Person tp5 = new Person("56s_d%&fAB", "Grace", "Geng",
+                    "32|Highland Street|Melbourne|Victoria|Australia",  "1990-11-15", 
+                    "15-11-1990, 3,15-12-1990, 3",
+                    true);
+            boolean result = tp5.addPerson(filePath);
+            assertFalse(result);
+            System.out.println("testAddPerson5 failed: the format of birthdate should follow DD-MM-YYYY");
+            System.out.println("test case 5 result: successful!");
+        }
 
-}
+    }
 }
