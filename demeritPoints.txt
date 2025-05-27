@@ -1,2 +1,0 @@
-P001,Alice,Tan,123 Orchard Rd,15-05-2005,14,true
-P002,Bob,Lee,456 Clementi Rd,15-05-1990,0,false
