@@ -4,6 +4,13 @@ public class Main {
     public static void main(String[] args) {
         Person person = new Person();
 
+        //FUNCTION 1
+         tp = new Person("56s_d%&fab", "Grace", "Geng",
+			    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
+			    "15-11-1990, 3,15-12-1990, 3",
+			    true);
+        tp.addPerson();
+
         //FUNCTION 2
         String filePath = "persons.txt";
 
