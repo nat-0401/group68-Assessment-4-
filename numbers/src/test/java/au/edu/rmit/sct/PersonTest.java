@@ -248,78 +248,85 @@ public class PersonTest {
     //FUNCTION 1
     @TestMethodOrder(OrderAnnotation.class)
     @Nested
-    class AddPersonTests {
-		        private final String filePath = "Person.txt";
-            
-        @Test
-        @Order(1)
-        void testAddPerson1() {
-            //the last two characters should be uppercase letters A-Z
-            Person tp1 = new Person("56s_d%&fab", "Grace", "Geng",
-                    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
-                    "15-11-1990, 3,15-12-1990, 3",
-                    true);
-            boolean result = tp1.addPerson(filePath);
-            assertFalse(result);
-            System.out.println("testAddPerson1 failed: personID error: the last two characters should be uppercase letters A-Z");
-            System.out.println("test case 1 result: successful!");
-        }
-        
-        @Test
-        @Order(2)
-        void testAddPerson2() {
-            //the first two characters should be numbers between 2-9
-            Person tp2 = new Person("abs_d%&fAB", "Grace", "Geng",
-                    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
-                    "15-11-1990, 3,15-12-1990, 3",
-                    true);
-            boolean result = tp2.addPerson(filePath);
-            assertFalse(result);
-            System.out.println("testAddPerson2 failed: personID error: the first two characters should be numbers between 2-9");
-            System.out.println("test case 2 result: successful!");
-        }
-        
-        @Test
-        @Order(3)
-        void testAddPerson3() {
-            //the state should be Victoria
-            Person tp3 = new Person("56s_d%&fAB", "Grace", "Geng",
-                    "32|Highland Street|Melbourne|Queensland|Australia",  "15-11-1990", 
-                    "15-11-1990, 3,15-12-1990, 3",
-                    true);
-            boolean result = tp3.addPerson(filePath);
-            assertFalse(result);
-            System.out.println("testAddPerson3 failed: the state should be Victoria");
-            System.out.println("test case 3 result: successful!");
-        }
-        
-        @Test
-        @Order(4)
-        void testAddPerson4() {
-            //Correctly add personal information 
-            Person tp4 = new Person("56s_d%&fAB", "Grace", "Geng",
-                    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
-                    "15-11-1990, 3,15-12-1990, 3",
-                    true);
-            boolean result = tp4.addPerson(filePath);
-            assertTrue(result);
-            System.out.println("testAddPerson4 finished: personal information added");
-            System.out.println("test case 4 result: successful!");
-        }
-        
-        @Test
-        @Order(5)
-        void testAddPerson5() {
-            //the format of birthdate should follow DD-MM-YYYY
-            Person tp5 = new Person("56s_d%&fAB", "Grace", "Geng",
-                    "32|Highland Street|Melbourne|Victoria|Australia",  "1990-11-15", 
-                    "15-11-1990, 3,15-12-1990, 3",
-                    true);
-            boolean result = tp5.addPerson(filePath);
-            assertFalse(result);
-            System.out.println("testAddPerson5 failed: the format of birthdate should follow DD-MM-YYYY");
-            System.out.println("test case 5 result: successful!");
-        }
+    class AddPersonalTests {
+		
+		private final String filePath = "Person.txt";
+		
+		@BeforeEach
+        public void clearFile() throws IOException {
+			if (!Files.exists(Paths.get(filePath))) {
+				Files.createFile(Paths.get(filePath));
+			}
+//			else {
+//				Files.write(Paths.get(filePath), new byte[0], StandardOpenOption.TRUNCATE_EXISTING);
+//			}
 
-    }
+        }
+		
+		@Test
+        @Order(1)
+		void testAddPerson1() {
+			//the last two characters should be uppercase letters A-Z
+			Person tp1 = new Person("56s_d%&fab", "Grace", "Geng",
+				    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
+				    "15-11-1990|3|15-12-1990|3",
+				    true);
+			System.out.println("testAddPerson1: personID error: the last two characters should be uppercase letters A-Z");
+			boolean result = tp1.addPerson(filePath);
+			assertFalse(result);
+			System.out.println("testAddPerson1: successful!");
+		}
+		
+		@Test
+        @Order(2)
+		void testAddPerson2() {
+			//the first two characters should be numbers between 2-9
+			Person tp2 = new Person("abs_d%&fAB", "Grace", "Geng",
+				    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
+				    "15-11-1990|3|15-12-1990| 3",
+				    true);
+			System.out.println("testAddPerson2: personID error: the first two characters should be numbers between 2-9");
+			assertFalse(tp2.addPerson(filePath));
+			System.out.println("testAddPerson2: successly!");
+		}
+		
+		@Test
+        @Order(3)
+		void testAddPerson3() {
+			//the state should be Victoria
+			Person tp3 = new Person("56s_d%&fAB", "Grace", "Geng",
+				    "32|Highland Street|Melbourne|Queensland|Australia",  "15-11-1990", 
+				    "15-11-1990|3|15-12-1990| 3",
+				    true);
+			System.out.println("testAddPerson3: the state should be Victoria");
+			assertFalse(tp3.addPerson(filePath));
+			System.out.println("testAddPerson3: successful!");
+		}
+		
+		@Test
+        @Order(4)
+		void testAddPerson4() {
+			//the personID should be 10 characters long
+			Person tp4 = new Person("56s_d%&fA", "Grace", "Geng",
+				    "32|Highland Street|Melbourne|Queensland|Australia",  "15-11-1990", 
+				    "15-11-1990| 3|15-12-1990| 3",
+				    true);
+			System.out.println("testAddPerson4: the personID should be 10 characters long");
+			assertFalse(tp4.addPerson(filePath));
+			System.out.println("testAddPerson4: successful!");
+		}
+		
+		@Test
+        @Order(5)
+		void testAddPerson5() {
+			//the format of birthdate should follow DD-MM-YYYY
+			Person tp5 = new Person("56s_d%&fA", "Grace", "Geng",
+				    "32|Highland Street|Melbourne|Queensland|Australia",  "1990-11-15", 
+				    "15-11-1990| 3|15-12-1990| 3",
+				    true);
+			System.out.println("testAddPerson5: the format of birthdate should follow DD-MM-YYYY");
+			assertFalse(tp5.addPerson(filePath));
+			System.out.println("testAddPerson5: successful!");
+		}
+	}
 }
