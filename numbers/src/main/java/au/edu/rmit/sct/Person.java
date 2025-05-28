@@ -369,6 +369,7 @@ public class Person {
             setSuspended(true);
         } else {
             setSuspended(false);
+            return "Failed";
         }
 
         //Write to file demeritPoints.txt pt.3 (end)
