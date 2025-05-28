@@ -6,7 +6,7 @@ public class Main {
         //FUNCTION 1
         Person tp = new Person("56s_d%&fAB", "Grace", "Geng",
 			    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
-			    "15-11-1990|3|15-12-1990|3",
+			    "15-11-1990|3",
 			    true);
         boolean isAdded = tp.addPerson("Person.txt");
 
