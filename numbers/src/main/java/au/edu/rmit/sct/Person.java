@@ -180,11 +180,11 @@ public class Person {
 		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
 			StringBuilder sb = new StringBuilder();
-	        sb.append(this.personID).append("|")
-	          .append(this.firstName).append("|")
-	          .append(this.lastName).append("|")
-	          .append(this.address).append("|") // Address is a string in format "streetNumber|street|city|state|country"
-	          .append(this.birthdate).append("|");
+	        sb.append(this.personID).append(",")
+	          .append(this.firstName).append(",")
+	          .append(this.lastName).append(",")
+	          .append(this.address).append(",") // Address is a string in format "streetNumber|street|city|state|country"
+	          .append(this.birthdate).append(",");
 
 	        demeritPoints = convertStringToHashMapList(rawDemeritPointsString);
 	        // Process demeritPoints
@@ -193,13 +193,13 @@ public class Person {
                 List<Integer> pointsList = entry.getValue();
 
                 for (Integer point : pointsList) {
-                    sb.append(DATE_FORMAT.format(date)).append("|").append(point).append("|");
+                    sb.append(DATE_FORMAT.format(date)).append("|").append(point).append(",");
                 }
             }
 	        if (!this.demeritPoints.isEmpty()) {
 	            sb.deleteCharAt(sb.length() - 1); // Remove the last comma
 	        }
-	        sb.append("|")
+	        sb.append(",")
 	          .append(this.isSuspended);
 			writer.write(sb.toString());
             writer.newLine();
