@@ -220,7 +220,7 @@ public class PersonTest {
                 System.out.println("isSuspended? " + person2.isSuspended());
                 System.out.println("test data 2 result: " + result2 + " (Error: isSuspended returned false, cumulative demerit points is 7 which is less than or equal to 12)");
                 System.out.println("isSuspended? " + person3.isSuspended());
-                System.out.println("test data 3 result: " + result3 + " (Error: isSuspended returned false, demerit points is 12 which is less than or equal to 12)");
+                System.out.println("test data 3 result: " + result3 + " (Error: isSuspended returned false, cumulative demerit points is 12 which is less than or equal to 12)");
         }
 
         @Test
