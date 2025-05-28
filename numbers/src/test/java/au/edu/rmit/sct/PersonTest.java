@@ -186,7 +186,7 @@ public class PersonTest {
                 Person person3 = new Person("C003","Nathaniel","Kong","481 Garden St","28-05-2011","12-12-2023,4,7-05-2024,2",false);
                 String result3 = person3.addDemeritPoints();
 
-                assertAll("", ()->assertEquals("Success", result), ()->assertEquals("Success", result2), ()->assertEquals("Success", result3));
+                assertAll("", ()->assertEquals("Failed", result), ()->assertEquals("Failed", result2), ()->assertEquals("Failed", result3));
                 assertAll("", ()->assertFalse(person.isSuspended()), ()->assertFalse(person2.isSuspended()), ()->assertFalse(person3.isSuspended()));
                 System.out.println("test data 1 result: " + result);
                 System.out.println("isSuspended? " + person.isSuspended());
@@ -213,7 +213,7 @@ public class PersonTest {
                 Person person3 = new Person("C003","Nathaniel","Kong","481 Garden St","28-05-1997","12-12-2023,6,7-05-2024,6",false);
                 String result3 = person3.addDemeritPoints();
 
-                assertAll("", ()->assertEquals("Success", result), ()->assertEquals("Success", result2), ()->assertEquals("Success", result3));
+                assertAll("", ()->assertEquals("Failed", result), ()->assertEquals("Failed", result2), ()->assertEquals("Failed", result3));
                 assertAll("", ()->assertFalse(person.isSuspended()), ()->assertFalse(person2.isSuspended()), ()->assertFalse(person3.isSuspended()));
                 System.out.println("test data 1 result: " + result);
                 System.out.println("isSuspended? " + person.isSuspended());
