@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="au.edu.rmit.sct.PersonTest" time="0.082" tests="0" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="au.edu.rmit.sct.PersonTest$AddPersonalTests" time="0.009" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -59,4 +59,29 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
+  <testcase name="testAddPerson1" classname="au.edu.rmit.sct.PersonTest$AddPersonalTests" time="0.004">
+    <system-out><![CDATA[testAddPerson1: personID error: the last two characters should be uppercase letters A-Z
+testAddPerson1: successful!
+]]></system-out>
+  </testcase>
+  <testcase name="testAddPerson2" classname="au.edu.rmit.sct.PersonTest$AddPersonalTests" time="0.001">
+    <system-out><![CDATA[testAddPerson2: personID error: the first two characters should be numbers between 2-9
+testAddPerson2: successly!
+]]></system-out>
+  </testcase>
+  <testcase name="testAddPerson3" classname="au.edu.rmit.sct.PersonTest$AddPersonalTests" time="0.001">
+    <system-out><![CDATA[testAddPerson3: the state should be Victoria
+testAddPerson3: successful!
+]]></system-out>
+  </testcase>
+  <testcase name="testAddPerson4" classname="au.edu.rmit.sct.PersonTest$AddPersonalTests" time="0.001">
+    <system-out><![CDATA[testAddPerson4: successfully added
+testAddPerson4: successful!
+]]></system-out>
+  </testcase>
+  <testcase name="testAddPerson5" classname="au.edu.rmit.sct.PersonTest$AddPersonalTests" time="0.001">
+    <system-out><![CDATA[testAddPerson5: the format of birthdate should follow DD-MM-YYYY
+testAddPerson5: successful!
+]]></system-out>
+  </testcase>
 </testsuite>
