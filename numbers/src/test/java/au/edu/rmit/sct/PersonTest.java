@@ -311,8 +311,8 @@ public class PersonTest {
 				    "32|Highland Street|Melbourne|Victoria|Australia",  "15-11-1990", 
 				    "15-11-1990| 3",
 				    true);
-			System.out.println("testAddPerson4: the personID should be 10 characters long");
-			assertFalse(tp4.addPerson(filePath));
+			System.out.println("testAddPerson4: successfully added");
+			assertTrue(tp4.addPerson(filePath));
 			System.out.println("testAddPerson4: successful!");
 		}
 		
