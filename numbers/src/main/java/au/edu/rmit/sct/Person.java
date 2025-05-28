@@ -180,34 +180,35 @@ public class Person {
 		}
 
 		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-			StringBuilder sb = new StringBuilder();
-	        sb.append(this.personID).append("|")
-	          .append(this.firstName).append("|")
-	          .append(this.lastName).append("|")
-	          .append(this.address).append("|") // Address is a string in format "streetNumber|street|city|state|country"
-	          .append(this.birthdate).append("|");
-
-	        demeritPoints = convertStringToHashMapList(rawDemeritPointsString);
+		
+        try{
+            StringBuilder sb = new StringBuilder();
+	        sb.append(this.personID).append(",")
+	          .append(this.firstName).append(",")
+	          .append(this.lastName).append(",")
+	          .append(this.address).append(",") // Address is a string in format "streetNumber|street|city|state|country"
+	          .append(this.birthdate).append(",");
+	        
 	        // Process demeritPoints
-            for (Map.Entry<Date, List<Integer>> entry : this.demeritPoints.entrySet()) {
-                Date date = entry.getKey();
-                List<Integer> pointsList = entry.getValue();
-
-                for (Integer point : pointsList) {
-                    sb.append(DATE_FORMAT.format(date)).append(",").append(point).append(",");
-                }
-            }
+	        for (Map.Entry<Date, Integer> entry : this.demeritPoints.entrySet()) {
+	            sb.append(DATE_FORMAT.format(entry.getKey())).append("|").append(entry.getValue()).append("|");
+	        }
 	        if (!this.demeritPoints.isEmpty()) {
 	            sb.deleteCharAt(sb.length() - 1); // Remove the last comma
 	        }
-	        sb.append("|")
+	        sb.append(",")
 	          .append(this.isSuspended);
-			writer.write(sb.toString());
-            writer.newLine();
-            writer.close();
+
+			List<String> lines = Arrays.asList(sb.toString());
+
+			if (!Files.exists(Paths.get(filePath))) {
+				Files.createFile(Paths.get(filePath));
+			}
+
+			Files.write(Paths.get(filePath), lines, StandardOpenOption.APPEND);
+
         }
-		catch (IOException e) {
+        catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
