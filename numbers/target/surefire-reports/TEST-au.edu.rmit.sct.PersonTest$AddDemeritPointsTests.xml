@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="au.edu.rmit.sct.PersonTest$AddDemeritPointsTests" time="0.049" tests="5" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="au.edu.rmit.sct.PersonTest$AddDemeritPointsTests" time="0.051" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -13,7 +13,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/23.0.2/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/ericapang/Documents/Assignment 4/numbers/target/surefire/surefirebooter-20250529011748856_3.jar /Users/ericapang/Documents/Assignment 4/numbers/target/surefire 2025-05-29T01-17-48_822-jvmRun1 surefire-20250529011748856_1tmp surefire_0-20250529011748856_2tmp"/>
+    <property name="sun.java.command" value="/Users/ericapang/Documents/Assignment 4/numbers/target/surefire/surefirebooter-20250529014006180_3.jar /Users/ericapang/Documents/Assignment 4/numbers/target/surefire 2025-05-29T01-40-06_152-jvmRun1 surefire-20250529014006180_1tmp surefire_0-20250529014006180_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/ericapang/Documents/Assignment 4/numbers/target/test-classes:/Users/ericapang/Documents/Assignment 4/numbers/target/classes:/Users/ericapang/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.12.2/junit-jupiter-api-5.12.2.jar:/Users/ericapang/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/ericapang/.m2/repository/org/junit/platform/junit-platform-commons/1.12.2/junit-platform-commons-1.12.2.jar:/Users/ericapang/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/ericapang/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.12.2/junit-jupiter-engine-5.12.2.jar:/Users/ericapang/.m2/repository/org/junit/platform/junit-platform-engine/1.12.2/junit-platform-engine-1.12.2.jar:"/>
@@ -30,7 +30,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/ericapang/Documents/Assignment 4/numbers/target/surefire/surefirebooter-20250529011748856_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/ericapang/Documents/Assignment 4/numbers/target/surefire/surefirebooter-20250529014006180_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="23.0.2"/>
@@ -84,7 +84,7 @@ isSuspended? false
 test data 3 result: Failed (Error: isSuspended returned false, cumulative demerit points is 6 which is less or equal to 6)
 ]]></system-out>
   </testcase>
-  <testcase name="testAddDemeritPoints4" classname="au.edu.rmit.sct.PersonTest$AddDemeritPointsTests" time="0.002">
+  <testcase name="testAddDemeritPoints4" classname="au.edu.rmit.sct.PersonTest$AddDemeritPointsTests" time="0.003">
     <system-out><![CDATA[---testAddDemeritPoints4()---
 isSuspended? false
 test data 1 result: Failed (Error: isSuspended returned false, cumulative demerit points did not occur within 2 years timeframe)
@@ -94,7 +94,7 @@ isSuspended? false
 test data 3 result: Failed (Error: isSuspended returned false, cumulative demerit points is 12 which is less than or equal to 12)
 ]]></system-out>
   </testcase>
-  <testcase name="testAddDemeritPoints5" classname="au.edu.rmit.sct.PersonTest$AddDemeritPointsTests" time="0.003">
+  <testcase name="testAddDemeritPoints5" classname="au.edu.rmit.sct.PersonTest$AddDemeritPointsTests" time="0.005">
     <system-out><![CDATA[---testAddDemeritPoints5()---
 isSuspended? true
 test data 1 result: Success ✓✓✓ ALL CONDITIONS MET! Demerit info added to txt.file. ✓✓✓

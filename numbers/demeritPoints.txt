@@ -6,10 +6,12 @@ PersonID: A001
 Total points within 2 years: 13
 is A001 suspended? true
 
+
 PersonID: B002
  Log        | Point   
  06-03-2025 | 2
  31-12-2023 | 5
 Total points within 2 years: 7
 is B002 suspended? true
+
 
