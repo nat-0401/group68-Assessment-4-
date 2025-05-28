@@ -108,14 +108,6 @@ public class PersonTest {
 
 		private final String filePath = "demeritPoints.txt";
 
-		@BeforeEach
-        public void clearFile() throws IOException {
-			if (!Files.exists(Paths.get(filePath))) {
-				Files.createFile(Paths.get(filePath));
-			}
-
-        }
-
         @Test
         @Order(1)
         public void testAddDemeritPoints1() {
