@@ -195,7 +195,7 @@ public class Person {
                 List<Integer> pointsList = entry.getValue();
 
                 for (Integer point : pointsList) {
-                    sb.append(DATE_FORMAT.format(date)).append(",").append(point).append(",");
+                    sb.append(DATE_FORMAT.format(date)).append(",").append(point).append("|");
                 }
             }
 	        if (!this.demeritPoints.isEmpty()) {
