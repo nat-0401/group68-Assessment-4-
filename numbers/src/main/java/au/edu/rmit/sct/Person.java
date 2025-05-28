@@ -28,7 +28,7 @@ public class Person {
     private String lastName;
     private String address;
     private String birthdate;
-    //private HashMap<Date, Integer> demeritPoints;
+    private HashMap<Date, Integer> demeritPoints;
     private boolean isSuspended;
     private String rawDemeritPointsString;
     
@@ -96,7 +96,7 @@ public class Person {
         this.lastName = lastName;
         this.address = address;
         this.birthdate = birthdate;
-        this.rawDemeritPointsString = demeritPoints;
+        //this.rawDemeritPointsString = demeritPoints;
         this.isSuspended = isSuspended;
     }
 
