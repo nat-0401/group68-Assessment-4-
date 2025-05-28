@@ -217,12 +217,12 @@ public class Person {
 	          .append(this.birthdate).append(",");
 	        
 	        // Process demeritPoints
-	        for (Map.Entry<Date, Integer> entry : this.demeritPoints.entrySet()) {
-	            sb.append(DATE_FORMAT.format(entry.getKey())).append("|").append(entry.getValue()).append("|");
-	        }
-	        if (!this.demeritPoints.isEmpty()) {
-	            sb.deleteCharAt(sb.length() - 1); // Remove the last comma
-	        }
+	        //for (Map.Entry<Date, Integer> entry : this.demeritPoints.entrySet()) {
+	            //sb.append(DATE_FORMAT.format(entry.getKey())).append("|").append(entry.getValue()).append("|");
+	        //}
+	        //if (!this.demeritPoints.isEmpty()) {
+	            //sb.deleteCharAt(sb.length() - 1); // Remove the last comma
+	        //}
 	        sb.append(",")
 	          .append(this.isSuspended);
 
