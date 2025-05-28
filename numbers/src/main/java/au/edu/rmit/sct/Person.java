@@ -14,11 +14,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.time.Period;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.nio.file.StandardOpenOption;
+
     
 public class Person {
     private String personID;
@@ -178,7 +181,7 @@ public class Person {
 		}
 
 		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+		try { //(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
 			StringBuilder sb = new StringBuilder();
 	        sb.append(this.personID).append(",")
 	          .append(this.firstName).append(",")
@@ -199,11 +202,17 @@ public class Person {
 	        if (!this.demeritPoints.isEmpty()) {
 	            sb.deleteCharAt(sb.length() - 1); // Remove the last comma
 	        }
+
 	        sb.append(",")
 	          .append(this.isSuspended);
-			writer.write(sb.toString());
-            writer.newLine();
-            writer.close();
+
+			List<String> lines = Arrays.asList(sb.toString());
+
+			if (!Files.exists(Paths.get(filePath))) {
+				Files.createFile(Paths.get(filePath));
+			}
+
+			Files.write(Paths.get(filePath), lines, StandardOpenOption.APPEND);
         }
 		catch (IOException e) {
 			// TODO Auto-generated catch block
