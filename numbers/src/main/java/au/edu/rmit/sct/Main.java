@@ -25,10 +25,10 @@ public class Main {
 
         //FUNCTION 3
         Person person1 = new Person("A001","Erica","Pang","151 La Trobe St","15-05-2000","01-01-2020,6,01-02-2024,6,01-03-2024,1",false);
-        String result = person1.addDemeritPoints();
+        String result = person1.addDemeritPoints("demeritPoints.txt");
 
-        System.out.println("Result: " + result + "\n");
         System.out.println("Is suspended? " + person1.isSuspended() + "\n");
+        System.out.println("Added to file demeritPoints.txt? " + result + "\n");
         System.out.println("Working directory: " + System.getProperty("user.dir")+ "\n");
     }
 }
