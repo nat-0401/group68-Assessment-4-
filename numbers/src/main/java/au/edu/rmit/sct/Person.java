@@ -1,8 +1,6 @@
 package au.edu.rmit.sct;
 import java.util.HashMap;
 import java.util.Date;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -128,8 +126,7 @@ public class Person {
                 throw new IllegalArgumentException("Invalid points format: " + pairs[i + 1], e);
             }
         }
-        
-       
+
         return map;
     }
 
@@ -181,7 +178,7 @@ public class Person {
 		}
 
 		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-		try { //(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+		try { 
 			StringBuilder sb = new StringBuilder();
 	        sb.append(this.personID).append(",")
 	          .append(this.firstName).append(",")
@@ -315,83 +312,89 @@ public class Person {
     }
     
 
-    public String addDemeritPoints() {
-        //Write to file demeritPoints.txt pt.1 (begin)
-        StringBuilder fileContent = new StringBuilder(); 
-        fileContent.append("PersonID: " + personID + "\n");
-        fileContent.append(" Log        | Point   \n");
-
-        int totalPoints = 0;
-        LocalDate today = LocalDate.now();
-
-        //Condition 1 & 2: The format of the date of the offense should follow the following format: DD-MM-YYYY;
-        //The demerit points must be a whole number.
+    public String addDemeritPoints(String filePath) {
         try {
-            demeritPoints = convertStringToHashMapList(rawDemeritPointsString);
-        } catch (IllegalArgumentException e) {
-            return "Failed"; 
-        }
+            //Write to file demeritPoints.txt pt.1 (begin)
+            StringBuilder fileContent = new StringBuilder(); 
+            fileContent.append("PersonID: " + personID + "\n");
+            fileContent.append(" Log        | Point   \n");
 
-        for (Map.Entry<Date, List<Integer>> entry : demeritPoints.entrySet()) {
-            Date offenseDate = entry.getKey();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            sdf.setLenient(false);
-            String formattedDate = sdf.format(offenseDate);
+            int totalPoints = 0;
+            LocalDate today = LocalDate.now();
 
-            LocalDate offenseLocalDate = offenseDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            long yearsDiff = ChronoUnit.YEARS.between(offenseLocalDate, today);
-
-            //Condition 1 pt2 EXTRA: The offense date should not be after the current date;
-            if (offenseLocalDate.isAfter(today)) {
-                return "Failed";
+            //Condition 1 & 2: The format of the date of the offense should follow the following format: DD-MM-YYYY;
+            //The demerit points must be a whole number.
+            try {
+                demeritPoints = convertStringToHashMapList(rawDemeritPointsString);
+            } catch (IllegalArgumentException e) {
+                return "Failed"; 
             }
 
-            for (Integer points : entry.getValue()) {
-                //Condition 2 pt2: The demerit points must be between 1-6;
-                if (points < 1 || points > 6) {
+            for (Map.Entry<Date, List<Integer>> entry : demeritPoints.entrySet()) {
+                Date offenseDate = entry.getKey();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                sdf.setLenient(false);
+                String formattedDate = sdf.format(offenseDate);
+
+                LocalDate offenseLocalDate = offenseDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                long yearsDiff = ChronoUnit.YEARS.between(offenseLocalDate, today);
+
+                //Condition 1 pt2 EXTRA: The offense date should not be after the current date;
+                if (offenseLocalDate.isAfter(today)) {
                     return "Failed";
                 }
 
-                if (yearsDiff < 2) {
-                    totalPoints += points;
+                for (Integer points : entry.getValue()) {
+                    //Condition 2 pt2: The demerit points must be between 1-6;
+                    if (points < 1 || points > 6) {
+                        return "Failed";
+                    }
+
+                    if (yearsDiff < 2) {
+                        totalPoints += points;
+                    }
+
+                    //Write to file demeritPoints.txt pt.2 (loop)
+                    fileContent.append(" " + formattedDate + " | " + points + "\n");
                 }
-
-                //Write to file demeritPoints.txt pt.2 (loop)
-                fileContent.append(" " + formattedDate + " | " + points + "\n");
             }
-        }
 
-        //Condition 3: If the person is under 21, the isSuspended variable should be set to true if the total demerit points within two years exceed 6;
-	    //If the person is over 21, the isSuspended variable should be set to true if the total demerit points within two years exceed 12
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate birthDateObj;
-        try {
-            birthDateObj = LocalDate.parse(this.birthdate, formatter);
-        } catch (Exception e) {
-            return "Failed";
-        }
-        int age = Period.between(birthDateObj, today).getYears();
+            //Condition 3: If the person is under 21, the isSuspended variable should be set to true if the total demerit points within two years exceed 6;
+            //If the person is over 21, the isSuspended variable should be set to true if the total demerit points within two years exceed 12
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate birthDateObj;
+            try {
+                birthDateObj = LocalDate.parse(this.birthdate, formatter);
+            } catch (Exception e) {
+                return "Failed";
+            }
+            int age = Period.between(birthDateObj, today).getYears();
 
-        if ((age < 21 && totalPoints > 6) || (age >= 21 && totalPoints > 12)) {
-            setSuspended(true);
-        } else {
-            setSuspended(false);
-            return "Failed";
-        }
+            if ((age < 21 && totalPoints > 6) || (age >= 21 && totalPoints > 12)) {
+                setSuspended(true);
+            } else {
+                setSuspended(false);
+                return "Failed";
+            }
 
-        //Write to file demeritPoints.txt pt.3 (end)
-        fileContent.append("Total points within 2 years: " + totalPoints + "\n");
-        fileContent.append("is " + personID + " suspended? " + isSuspended() + "\n" + "\n");
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("demeritPoints.txt", true))) {
-            writer.write(fileContent.toString());
+            //Write to file demeritPoints.txt pt.3 (end)
+            fileContent.append("Total points within 2 years: " + totalPoints + "\n");
+            fileContent.append("is " + personID + " suspended? " + isSuspended() + "\n" + "\n");
+
+            List<String> lines = Arrays.asList(fileContent.toString());
+
+            if (!Files.exists(Paths.get(filePath))) {
+                Files.createFile(Paths.get(filePath));
+            }
+
+            Files.write(Paths.get(filePath), lines, StandardOpenOption.APPEND);
+
         } catch (IOException e) {
-            e.printStackTrace();
-            return "Failed";
-        }
-
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return "Success";
     }
-
 }
 
 
