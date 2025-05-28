@@ -28,7 +28,7 @@ public class Person {
     private String lastName;
     private String address;
     private String birthdate;
-    private HashMap<Date, List<Integer>> demeritPoints;
+    private HashMap<Date, Integer> demeritPoints;
     private boolean isSuspended;
     private String rawDemeritPointsString;
     
@@ -72,12 +72,12 @@ public class Person {
         this.birthdate = birthdate;
     }
     
-    public HashMap<Date, List<Integer>> getDemeritPoints() {
+    public HashMap<Date, ListInteger> getDemeritPoints() {
 		  return demeritPoints;
 	}
 
 	public void setDemeritPoints(String input) {
-		  this.demeritPoints = convertStringToHashMapList(input);
+		  this.demeritPoints = convertStringToHashMap(input);
 	}
     
     public boolean isSuspended() {
@@ -121,6 +121,33 @@ public class Person {
                 }
                 map.get(date).add(points);
 
+            } catch (ParseException e) {
+                throw new IllegalArgumentException("Invalid date format: " + pairs[i], e);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid points format: " + pairs[i + 1], e);
+            }
+        }
+        
+       
+        return map;
+    }
+
+	public static HashMap<Date, Integer> convertStringToHashMap(String input) {
+        HashMap<Date, Integer> map = new HashMap<>();
+        
+        String[] pairs = input.split("\\|");
+        if (pairs.length % 2 != 0) {
+            throw new IllegalArgumentException("Input string must have an even number of elements.");
+        }
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        
+        for (int i = 0; i < pairs.length; i += 2) {
+            try {
+                String dateStr = pairs[i];
+                int points = Integer.parseInt(pairs[i + 1].trim());
+                Date date = dateFormat.parse(dateStr);
+                map.put(date, points);
             } catch (ParseException e) {
                 throw new IllegalArgumentException("Invalid date format: " + pairs[i], e);
             } catch (NumberFormatException e) {
@@ -180,34 +207,35 @@ public class Person {
 		}
 
 		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-			StringBuilder sb = new StringBuilder();
-	        sb.append(this.personID).append("|")
-	          .append(this.firstName).append("|")
-	          .append(this.lastName).append("|")
-	          .append(this.address).append("|") // Address is a string in format "streetNumber|street|city|state|country"
-	          .append(this.birthdate).append("|");
-
-	        demeritPoints = convertStringToHashMapList(rawDemeritPointsString);
+		
+        try{
+            StringBuilder sb = new StringBuilder();
+	        sb.append(this.personID).append(",")
+	          .append(this.firstName).append(",")
+	          .append(this.lastName).append(",")
+	          .append(this.address).append(",") // Address is a string in format "streetNumber|street|city|state|country"
+	          .append(this.birthdate).append(",");
+	        
 	        // Process demeritPoints
-            for (Map.Entry<Date, List<Integer>> entry : this.demeritPoints.entrySet()) {
-                Date date = entry.getKey();
-                List<Integer> pointsList = entry.getValue();
-
-                for (Integer point : pointsList) {
-                    sb.append(DATE_FORMAT.format(date)).append(",").append(point).append("|");
-                }
-            }
+	        for (Map.Entry<Date, Integer> entry : this.demeritPoints.entrySet()) {
+	            sb.append(DATE_FORMAT.format(entry.getKey())).append("|").append(entry.getValue()).append("|");
+	        }
 	        if (!this.demeritPoints.isEmpty()) {
 	            sb.deleteCharAt(sb.length() - 1); // Remove the last comma
 	        }
-	        sb.append("|")
+	        sb.append(",")
 	          .append(this.isSuspended);
-			writer.write(sb.toString());
-            writer.newLine();
-            writer.close();
+
+			List<String> lines = Arrays.asList(sb.toString());
+
+			if (!Files.exists(Paths.get(filePath))) {
+				Files.createFile(Paths.get(filePath));
+			}
+
+			Files.write(Paths.get(filePath), lines, StandardOpenOption.APPEND);
+
         }
-		catch (IOException e) {
+        catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
