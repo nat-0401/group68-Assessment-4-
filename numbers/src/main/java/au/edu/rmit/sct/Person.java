@@ -15,8 +15,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.time.Period;
-import java.io.BufferedWriter;
-import java.util.Map;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -195,7 +193,7 @@ public class Person {
                 List<Integer> pointsList = entry.getValue();
 
                 for (Integer point : pointsList) {
-                    sb.append(DATE_FORMAT.format(date)).append(",").append(point).append("|");
+                    sb.append(DATE_FORMAT.format(date)).append("|").append(point).append("|");
                 }
             }
 	        if (!this.demeritPoints.isEmpty()) {
