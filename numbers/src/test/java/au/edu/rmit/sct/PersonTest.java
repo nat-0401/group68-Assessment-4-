@@ -260,6 +260,7 @@ public class PersonTest {
 //			else {
 //				Files.write(Paths.get(filePath), new byte[0], StandardOpenOption.TRUNCATE_EXISTING);
 //			}
+
         }
 		
 		@Test
@@ -327,4 +328,14 @@ public class PersonTest {
 			System.out.println("testAddPerson5: successful!");
 		}
 	}
+//	@Test
+//	void testUpdatePersonalDetails() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testAddDemeritPoints() {
+//		fail("Not yet implemented");
+//	}
+
 }
