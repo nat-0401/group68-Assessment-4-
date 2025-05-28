@@ -72,7 +72,7 @@ public class Person {
         this.birthdate = birthdate;
     }
     
-    public HashMap<Date, ListInteger> getDemeritPoints() {
+    public HashMap<Date, Integer> getDemeritPoints() {
 		  return demeritPoints;
 	}
 
