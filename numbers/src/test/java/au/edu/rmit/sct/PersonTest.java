@@ -188,12 +188,12 @@ public class PersonTest {
 
                 assertAll("", ()->assertEquals("Failed", result), ()->assertEquals("Failed", result2), ()->assertEquals("Failed", result3));
                 assertAll("", ()->assertFalse(person.isSuspended()), ()->assertFalse(person2.isSuspended()), ()->assertFalse(person3.isSuspended()));
-                System.out.println("test data 1 result: " + result);
                 System.out.println("isSuspended? " + person.isSuspended());
-                System.out.println("test data 2 result: " + result2);
+                System.out.println("test data 1 result: " + result + " (No suspension: demerit logs did not occur within 2 years timeframe)");
                 System.out.println("isSuspended? " + person2.isSuspended());
-                System.out.println("test data 3 result: " + result3);
+                System.out.println("test data 2 result: " + result2 + " (No suspension: cumulative demerit points is 4 which is less than or equal to 6)");
                 System.out.println("isSuspended? " + person3.isSuspended());
+                System.out.println("test data 3 result: " + result3 + " (No suspension: cumulative demerit points is 6 which is less or equal to 6)");
         }
 
         @Test
@@ -215,12 +215,12 @@ public class PersonTest {
 
                 assertAll("", ()->assertEquals("Failed", result), ()->assertEquals("Failed", result2), ()->assertEquals("Failed", result3));
                 assertAll("", ()->assertFalse(person.isSuspended()), ()->assertFalse(person2.isSuspended()), ()->assertFalse(person3.isSuspended()));
-                System.out.println("test data 1 result: " + result);
                 System.out.println("isSuspended? " + person.isSuspended());
-                System.out.println("test data 2 result: " + result2);
+                System.out.println("test data 1 result: " + result + " (No suspension: demerit logs did not occur within 2 years timeframe)");
                 System.out.println("isSuspended? " + person2.isSuspended());
-                System.out.println("test data 3 result: " + result3);
+                System.out.println("test data 2 result: " + result2 + " (No suspension: cumulative demerit points is 7 which is less than or equal to 12)");
                 System.out.println("isSuspended? " + person3.isSuspended());
+                System.out.println("test data 3 result: " + result3 + " (No suspension: cumulative demerit points is 12 which is less than or equal to 12)");
         }
 
         @Test
@@ -238,10 +238,10 @@ public class PersonTest {
 
                 assertAll("", ()->assertEquals("Success", result), ()->assertEquals("Success", result2));
                 assertAll("", ()->assertTrue(person.isSuspended()), ()->assertTrue(person2.isSuspended()));
-                System.out.println("test data 1 result: " + result);
                 System.out.println("isSuspended? " + person.isSuspended());
-                System.out.println("test data 2 result: " + result2);
+                System.out.println("test data 1 result: " + result + " ✓✓✓ ALL CONDITIONS MET! Demerit info added to txt.file.");
                 System.out.println("isSuspended? " + person2.isSuspended());
+                System.out.println("test data 2 result: " + result2 + " ✓✓✓ ALL CONDITIONS MET! Demerit info added to txt.file.");
         }
     }
     
