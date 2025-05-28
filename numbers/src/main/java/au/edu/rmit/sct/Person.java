@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.time.Period;
 import java.io.BufferedWriter;
 import java.util.Map;
@@ -90,37 +91,34 @@ public class Person {
     
     public Person() {}
 
-    public Person(String personID, String firstName, String lastName, String address,  String birthdate, String demeritPoints, boolean isSuspended) {
-        this.personID = personID;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.birthdate = birthdate;
-        this.rawDemeritPointsString = demeritPoints;
-        this.isSuspended = isSuspended;
-    }
-
-    public static HashMap<Date, List<Integer>> convertStringToHashMapList(String input) {
-        HashMap<Date, List<Integer>> map = new HashMap<>();
-        String[] pairs = input.split(",");
+    public Person(String personID,	String firstName, String lastName,
+			String address,  String birthdate,	String demeritPoints,
+			boolean isSuspended) {
+		this.personID = personID;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.birthdate = birthdate;
+		this.demeritPoints = convertStringToHashMap(demeritPoints);
+		this.isSuspended = isSuspended;
+	}
+	
+	public static HashMap<Date, Integer> convertStringToHashMap(String input) {
+        HashMap<Date, Integer> map = new HashMap<>();
+        
+        String[] pairs = input.split("\\|");
         if (pairs.length % 2 != 0) {
             throw new IllegalArgumentException("Input string must have an even number of elements.");
         }
-
+        
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        dateFormat.setLenient(false);
-
+        
         for (int i = 0; i < pairs.length; i += 2) {
             try {
                 String dateStr = pairs[i];
                 int points = Integer.parseInt(pairs[i + 1].trim());
                 Date date = dateFormat.parse(dateStr);
-
-                if (!map.containsKey(date)) {
-                    map.put(date, new ArrayList<>());
-                }
-                map.get(date).add(points);
-
+                map.put(date, points);
             } catch (ParseException e) {
                 throw new IllegalArgumentException("Invalid date format: " + pairs[i], e);
             } catch (NumberFormatException e) {
