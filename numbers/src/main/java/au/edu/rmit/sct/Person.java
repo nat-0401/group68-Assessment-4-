@@ -28,7 +28,7 @@ public class Person {
     private String lastName;
     private String address;
     private String birthdate;
-    private HashMap<Date, Integer> demeritPoints;
+    //private HashMap<Date, Integer> demeritPoints;
     private boolean isSuspended;
     private String rawDemeritPointsString;
     
