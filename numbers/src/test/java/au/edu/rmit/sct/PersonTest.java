@@ -114,15 +114,15 @@ public class PersonTest {
             //Test Case 1: Check with invalid offense date
             System.out.println("---testAddDemeritPoints1()---");
                 //Test Data 1: yyyy-mm-dd
-                Person person = new Person("A001","Erica","Pang","151 La Trobe St","15-05-2008","2024-01-01,3",false);
+                Person person = new Person("55s_d%&fAB","Erica","Pang","151|La Trobe St|Melbourne|Victoria|Australia","15-05-2008","2024-01-01,3",false);
                 String result = person.addDemeritPoints(filePath);
 
                 //Test Data 2: month out of range
-                Person person2 = new Person("B002","Rui","Geng","332 Caviar St","29-05-2005","31-13-2023,2",false);
+                Person person2 = new Person("56s_d%&fAB","Rui","Geng","332|Caviar St|Melbourne|Victoria|Australia","29-05-2005","31-13-2023,2",false);
                 String result2 = person2.addDemeritPoints(filePath);
 
                 //Test Data 3: date > current date (future)
-                Person person3 = new Person("C003","Nathaniel","Kong","481 Garden St","28-05-2010","12-12-2028,4",false);
+                Person person3 = new Person("57s_d%&fAB","Nathaniel","Kong","481|Garden St|Melbourne|Victoria|Australia","28-05-2010","12-12-2028,4",false);
                 String result3 = person3.addDemeritPoints(filePath);
 
                 assertAll("", ()->assertEquals("Failed", result), ()->assertEquals("Failed", result2), ()->assertEquals("Failed", result3));
@@ -137,19 +137,19 @@ public class PersonTest {
             //Test Case 2: Check with invalid demerit points input
             System.out.println("---testAddDemeritPoints2()---");
                 //Test Data 1: points < 1
-                Person person = new Person("A001","Erica","Pang","151 La Trobe St","15-05-2008","01-01-2024,0",false);
+                Person person = new Person("55s_d%&fAB","Erica","Pang","151|La Trobe St|Melbourne|Victoria|Australia","15-05-2008","01-01-2024,0",false);
                 String result = person.addDemeritPoints(filePath);
 
                 //Test Data 2: points > 6
-                Person person2 = new Person("B002","Rui","Geng","332 Caviar St","29-05-2005","31-12-2023,7",false);
+                Person person2 = new Person("56s_d%&fAB","Rui","Geng","332|Caviar St|Melbourne|Victoria|Australia","29-05-2005","31-12-2023,7",false);
                 String result2 = person2.addDemeritPoints(filePath);
 
                 //Test Data 3: decimal
-                Person person3 = new Person("C003","Nathaniel","Kong","481 Garden St","28-05-2010","12-12-2023,5.5",false);
+                Person person3 = new Person("57s_d%&fAB","Nathaniel","Kong","481|Garden St|Melbourne|Victoria|Australia","28-05-2010","12-12-2023,5.5",false);
                 String result3 = person3.addDemeritPoints(filePath);
 
                 //Test Data 4: empty variable
-                Person person4 = new Person("D004","Jerry","Lim","293 Salmon St","05-07-1999","12-12-2023",false);
+                Person person4 = new Person("58s_d%&fAB","Jerry","Lim","293|Salmon St|Melbourne|Victoria|Australia","05-07-1999","12-12-2023",false);
                 String result4 = person4.addDemeritPoints(filePath);
 
                 assertAll("", ()->assertEquals("Failed", result), ()->assertEquals("Failed", result2), ()->assertEquals("Failed", result3), ()->assertEquals("Failed", result4));
@@ -165,15 +165,15 @@ public class PersonTest {
             //Test Case 3: Check with valid input, isSuspended not triggered for under 21
             System.out.println("---testAddDemeritPoints3()---");
                 //Test Data 1: demerits not within 2 years
-                Person person = new Person("A001","Erica","Pang","151 La Trobe St","15-05-2008","01-01-2020,3,01-02-2024,4",false);
+                Person person = new Person("55s_d%&fAB","Erica","Pang","151|La Trobe St|Melbourne|Victoria|Australia","15-05-2008","01-01-2020,3,01-02-2024,4",false);
                 String result = person.addDemeritPoints(filePath);
 
                 //Test Data 2: point <= 6
-                Person person2 = new Person("B002","Rui","Geng","332 Caviar St","29-05-2005","30-12-2023,2,6-03-2025,1,16-06-2024,1",false);
+                Person person2 = new Person("56s_d%&fAB","Rui","Geng","332|Caviar St|Melbourne|Victoria|Australia","29-05-2005","30-12-2023,2,6-03-2025,1,16-06-2024,1",false);
                 String result2 = person2.addDemeritPoints(filePath);
 
                 //Test Data 3: point == 6
-                Person person3 = new Person("C003","Nathaniel","Kong","481 Garden St","28-05-2011","12-12-2023,4,7-05-2024,2",false);
+                Person person3 = new Person("57s_d%&fAB","Nathaniel","Kong","481|Garden St|Melbourne|Victoria|Australia","28-05-2011","12-12-2023,4,7-05-2024,2",false);
                 String result3 = person3.addDemeritPoints(filePath);
 
                 assertAll("", ()->assertEquals("Failed", result), ()->assertEquals("Failed", result2), ()->assertEquals("Failed", result3));
@@ -192,15 +192,15 @@ public class PersonTest {
             //Test Case 4: Check with valid input, isSuspended not triggered for over 21
             System.out.println("---testAddDemeritPoints4()---");
                 //Test Data 1: demerits not within 2 years
-                Person person = new Person("A001","Erica","Pang","151 La Trobe St","15-05-2000","01-01-2020,6,01-02-2024,6,01-03-2024,1",false);
+                Person person = new Person("55s_d%&fAB","Erica","Pang","151|La Trobe St|Melbourne|Victoria|Australia","15-05-2000","01-01-2020,6,01-02-2024,6,01-03-2024,1",false);
                 String result = person.addDemeritPoints(filePath);
 
                 //Test Data 2: point <= 12
-                Person person2 = new Person("B002","Rui","Geng","332 Caviar St","29-05-2003","31-12-2023,5,6-03-2025,2",false);
+                Person person2 = new Person("56s_d%&fAB","Rui","Geng","332|Caviar St|Melbourne|Victoria|Australia","29-05-2003","31-12-2023,5,6-03-2025,2",false);
                 String result2 = person2.addDemeritPoints(filePath);
 
                 //Test Data 3: point == 12
-                Person person3 = new Person("C003","Nathaniel","Kong","481 Garden St","28-05-1997","12-12-2023,6,7-05-2024,6",false);
+                Person person3 = new Person("57s_d%&fAB","Nathaniel","Kong","481|Garden St|Melbourne|Victoria|Australia","28-05-1997","12-12-2023,6,7-05-2024,6",false);
                 String result3 = person3.addDemeritPoints(filePath);
 
                 assertAll("", ()->assertEquals("Failed", result), ()->assertEquals("Failed", result2), ()->assertEquals("Failed", result3));
@@ -219,11 +219,11 @@ public class PersonTest {
             //Test Case 5: Check with all valid inputs and isSuspended triggered.
             System.out.println("---testAddDemeritPoints5()---");
                 //Test Data 1: point > 12, over 21
-                Person person = new Person("A001","Erica","Pang","151 La Trobe St","15-05-2000","01-01-2024,6,01-02-2024,6,01-03-2024,1",false);
+                Person person = new Person("55s_d%&fAB","Erica","Pang","151|La Trobe St|Melbourne|Victoria|Australia","15-05-2000","01-01-2024,6,01-02-2024,6,01-03-2024,1",false);
                 String result = person.addDemeritPoints(filePath);
 
                  //Test Data 2: point > 6, under 21
-                Person person2 = new Person("B002","Rui","Geng","332 Caviar St","29-05-2009","31-12-2023,5,6-03-2025,2",false);
+                Person person2 = new Person("56s_d%&fAB","Rui","Geng","332|Caviar St|Melbourne|Victoria|Australia","29-05-2009","31-12-2023,5,6-03-2025,2",false);
                 String result2 = person2.addDemeritPoints(filePath);
 
                 assertAll("", ()->assertEquals("Success", result), ()->assertEquals("Success", result2));
