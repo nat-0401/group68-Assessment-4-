@@ -126,7 +126,6 @@ public class Person {
                 throw new IllegalArgumentException("Invalid points format: " + pairs[i + 1], e);
             }
         }
-
         return map;
     }
 
@@ -323,7 +322,7 @@ public class Person {
             LocalDate today = LocalDate.now();
 
             //Condition 1 & 2: The format of the date of the offense should follow the following format: DD-MM-YYYY;
-            //The demerit points must be a whole number.
+            //The demerit points must be a whole number. (CHECKED IN: convertStringToHashMapList)
             try {
                 demeritPoints = convertStringToHashMapList(rawDemeritPointsString);
             } catch (IllegalArgumentException e) {
