@@ -104,7 +104,7 @@ public class Person {
         this.personID = personID;
         this.birthdate = birthdate;
         try {
-            this.demeritPoints = validateDemeritPoints(demeritPoints);
+            this.demeritPoints = convertStringToHashMapList(demeritPoints);
         } catch (IllegalArgumentException e) {
             demeritPointsValid=false;
         }
@@ -112,36 +112,6 @@ public class Person {
     }
 
     public static HashMap<Date, List<Integer>> convertStringToHashMapList(String input) {
-        HashMap<Date, List<Integer>> map = new HashMap<>();
-        String[] pairs = input.split(",");
-        if (pairs.length % 2 != 0) {
-            throw new IllegalArgumentException("Input string must have an even number of elements.");
-        }
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        dateFormat.setLenient(false);
-
-        for (int i = 0; i < pairs.length; i += 2) {
-            try {
-                String dateStr = pairs[i];
-                int points = Integer.parseInt(pairs[i + 1].trim());
-                Date date = dateFormat.parse(dateStr);
-
-                if (!map.containsKey(date)) {
-                    map.put(date, new ArrayList<>());
-                }
-                map.get(date).add(points);
-
-            } catch (ParseException e) {
-                throw new IllegalArgumentException("Invalid date format: " + pairs[i], e);
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Invalid points format: " + pairs[i + 1], e);
-            }
-        }
-        return map;
-    }
-
-    public static HashMap<Date, List<Integer>> validateDemeritPoints(String input) {
         HashMap<Date, List<Integer>> map = new HashMap<>();
         String[] pairs = input.split(",");
         if (pairs.length % 2 != 0) {
