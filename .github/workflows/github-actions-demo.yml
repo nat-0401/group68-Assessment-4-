@@ -1,7 +1,8 @@
 name: GitHub Actions Java test workflow
 run-name: Running tests on GitHub Actions
 
-on: [push]
+on:
+  workflow_dispatch:
 
 jobs:
   java-test:
