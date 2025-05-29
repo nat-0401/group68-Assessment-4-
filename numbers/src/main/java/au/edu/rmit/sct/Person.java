@@ -400,7 +400,6 @@ public class Person {
             Files.write(Paths.get(filePath), lines, StandardOpenOption.APPEND);
 
         } catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         return "Success";
