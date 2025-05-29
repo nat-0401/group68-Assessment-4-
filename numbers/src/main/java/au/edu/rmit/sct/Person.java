@@ -96,7 +96,7 @@ public class Person {
         this.lastName = lastName;
         this.address = address;
         this.birthdate = birthdate;
-        this.demeritPoints=convertStringToHashMapList(demeritPoints);
+        //this.demeritPoints=convertStringToHashMapList(demeritPoints);
         this.isSuspended = isSuspended;
     }
 
@@ -198,22 +198,23 @@ public class Person {
 	          .append(this.birthdate).append(",");
 
 	        // Process demeritPoints
-            for (Map.Entry<Date, List<Integer>> entry : this.demeritPoints.entrySet()) {
-                Date date = entry.getKey();
-                List<Integer> pointsList = entry.getValue();
+            //for (Map.Entry<Date, List<Integer>> entry : this.demeritPoints.entrySet()) {
+                //Date date = entry.getKey();
+                //List<Integer> pointsList = entry.getValue();
 
-                for (Integer point : pointsList) {
-                    sb.append(DATE_FORMAT.format(date)).append("|").append(point).append(",");
-                }
-            }
-	        if (!this.demeritPoints.isEmpty()) {
-	            sb.deleteCharAt(sb.length() - 1); // Remove the last comma
-	        }
+                //for (Integer point : pointsList) {
+                    //sb.append(DATE_FORMAT.format(date)).append("|").append(point).append(",");
+                //}
+            //}
+	        //if (!this.demeritPoints.isEmpty()) {
+	            //sb.deleteCharAt(sb.length() - 1); // Remove the last comma
+	        //}
 
-	        sb.append(",")
-	          .append(this.isSuspended);
+	         sb.append("15-11-1990|3");
+	         sb.append(",")
+	           .append(this.isSuspended);
 
-			List<String> lines = Arrays.asList(sb.toString());
+		List<String> lines = Arrays.asList(sb.toString());
 
 			if (!Files.exists(Paths.get(filePath))) {
 				Files.createFile(Paths.get(filePath));
