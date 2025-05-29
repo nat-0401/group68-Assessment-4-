@@ -29,7 +29,7 @@ public class Person {
     private String birthdate;
     private HashMap<Date, List<Integer>> demeritPoints;
     private boolean isSuspended;
-    private String rawDemeritPointsString;
+    private boolean demeritPointsValid=true;
     
     public String getPersonID() {
         return personID;
@@ -88,6 +88,7 @@ public class Person {
     }
     
     public Person() {}
+    
 
     public Person(String personID, String firstName, String lastName, String address,  String birthdate, String demeritPoints, boolean isSuspended) {
         this.personID = personID;
@@ -95,11 +96,52 @@ public class Person {
         this.lastName = lastName;
         this.address = address;
         this.birthdate = birthdate;
-        this.rawDemeritPointsString = demeritPoints;
+        this.demeritPoints=convertStringToHashMapList(demeritPoints);
         this.isSuspended = isSuspended;
     }
 
+    public Person(String personID, String birthdate, String demeritPoints) {
+        this.personID = personID;
+        this.birthdate = birthdate;
+        try {
+            this.demeritPoints = validateDemeritPoints(demeritPoints);
+        } catch (IllegalArgumentException e) {
+            demeritPointsValid=false;
+        }
+        this.isSuspended = false;
+    }
+
     public static HashMap<Date, List<Integer>> convertStringToHashMapList(String input) {
+        HashMap<Date, List<Integer>> map = new HashMap<>();
+        String[] pairs = input.split(",");
+        if (pairs.length % 2 != 0) {
+            throw new IllegalArgumentException("Input string must have an even number of elements.");
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        dateFormat.setLenient(false);
+
+        for (int i = 0; i < pairs.length; i += 2) {
+            try {
+                String dateStr = pairs[i];
+                int points = Integer.parseInt(pairs[i + 1].trim());
+                Date date = dateFormat.parse(dateStr);
+
+                if (!map.containsKey(date)) {
+                    map.put(date, new ArrayList<>());
+                }
+                map.get(date).add(points);
+
+            } catch (ParseException e) {
+                throw new IllegalArgumentException("Invalid date format: " + pairs[i], e);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid points format: " + pairs[i + 1], e);
+            }
+        }
+        return map;
+    }
+
+    public static HashMap<Date, List<Integer>> validateDemeritPoints(String input) {
         HashMap<Date, List<Integer>> map = new HashMap<>();
         String[] pairs = input.split(",");
         if (pairs.length % 2 != 0) {
@@ -185,7 +227,6 @@ public class Person {
 	          .append(this.address).append(",") // Address is a string in format "streetNumber|street|city|state|country"
 	          .append(this.birthdate).append(",");
 
-	        demeritPoints = convertStringToHashMapList(rawDemeritPointsString);
 	        // Process demeritPoints
             for (Map.Entry<Date, List<Integer>> entry : this.demeritPoints.entrySet()) {
                 Date date = entry.getKey();
@@ -316,17 +357,25 @@ public class Person {
             //Write to file demeritPoints.txt pt.1 (begin)
             StringBuilder fileContent = new StringBuilder(); 
             fileContent.append("PersonID: " + personID + "\n");
-            fileContent.append(" Log        | Point   \n");
+
+            LocalDate today = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate birthDateObj;
+            try {
+                birthDateObj = LocalDate.parse(this.birthdate, formatter);
+            } catch (Exception e) {
+                return "Failed";
+            }
+            int age = Period.between(birthDateObj, today).getYears();
+            fileContent.append("Age: " + age + "\n");
 
             int totalPoints = 0;
-            LocalDate today = LocalDate.now();
-
+            fileContent.append(" Log        | Point   \n");
+            
             //Condition 1 & 2: The format of the date of the offense should follow the following format: DD-MM-YYYY;
             //The demerit points must be a whole number. (CHECKED IN: convertStringToHashMapList)
-            try {
-                demeritPoints = convertStringToHashMapList(rawDemeritPointsString);
-            } catch (IllegalArgumentException e) {
-                return "Failed"; 
+            if (!demeritPointsValid) {
+                return "Failed";
             }
 
             for (Map.Entry<Date, List<Integer>> entry : demeritPoints.entrySet()) {
@@ -360,15 +409,6 @@ public class Person {
 
             //Condition 3: If the person is under 21, the isSuspended variable should be set to true if the total demerit points within two years exceed 6;
             //If the person is over 21, the isSuspended variable should be set to true if the total demerit points within two years exceed 12
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate birthDateObj;
-            try {
-                birthDateObj = LocalDate.parse(this.birthdate, formatter);
-            } catch (Exception e) {
-                return "Failed";
-            }
-            int age = Period.between(birthDateObj, today).getYears();
-
             if ((age < 21 && totalPoints > 6) || (age >= 21 && totalPoints > 12)) {
                 setSuspended(true);
             } else {
