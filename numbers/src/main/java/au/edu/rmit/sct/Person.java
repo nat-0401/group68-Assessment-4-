@@ -96,7 +96,7 @@ public class Person {
         this.lastName = lastName;
         this.address = address;
         this.birthdate = birthdate;
-        //this.demeritPoints=convertStringToHashMapList(demeritPoints);
+        this.demeritPoints=convertStringToHashMapList(demeritPoints);
         this.isSuspended = isSuspended;
     }
 
