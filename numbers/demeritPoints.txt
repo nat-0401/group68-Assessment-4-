@@ -19,3 +19,41 @@ Total points within 2 years: 7
 is 56s_d%&fAB suspended? true
 
 
+PersonID: 55s_d%&fAB
+Age: 25
+ Log        | Point   
+ 01-02-2024 | 6
+ 01-01-2024 | 6
+ 01-03-2024 | 1
+Total points within 2 years: 13
+is 55s_d%&fAB suspended? true
+
+
+PersonID: 56s_d%&fAB
+Age: 16
+ Log        | Point   
+ 06-03-2025 | 2
+ 31-12-2023 | 5
+Total points within 2 years: 7
+is 56s_d%&fAB suspended? true
+
+
+PersonID: 55s_d%&fAB
+Age: 25
+ Log        | Point   
+ 01-02-2024 | 6
+ 01-01-2024 | 6
+ 01-03-2024 | 1
+Total points within 2 years: 13
+is 55s_d%&fAB suspended? true
+
+
+PersonID: 56s_d%&fAB
+Age: 16
+ Log        | Point   
+ 06-03-2025 | 2
+ 31-12-2023 | 5
+Total points within 2 years: 7
+is 56s_d%&fAB suspended? true
+
+
