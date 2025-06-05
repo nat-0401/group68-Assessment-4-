@@ -31,54 +31,6 @@ public class Person {
     private boolean isSuspended;
     private boolean demeritPointsValid=true;
     
-    public String getPersonID() {
-        return personID;
-    }
-    
-    public void setPersonID(String personID) {
-        this.personID = personID;
-    }
-    
-    public String getFirstName() {
-        return firstName;
-    }
-    
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    
-    public String getLastName() {
-        return lastName;
-    }
-    
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    
-    public String getAddress() {
-        return address;
-    }
-    
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    
-    public String getBirthdate() {
-        return birthdate;
-    }
-    
-    public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
-    }
-    
-    public HashMap<Date, List<Integer>> getDemeritPoints() {
-		  return demeritPoints;
-	}
-
-	public void setDemeritPoints(String input) {
-		  this.demeritPoints = convertStringToHashMapList(input);
-	}
-    
     public boolean isSuspended() {
         return isSuspended;
     }
@@ -89,7 +41,6 @@ public class Person {
     
     public Person() {}
     
-
     public Person(String personID, String firstName, String lastName, String address,  String birthdate, String demeritPoints, boolean isSuspended) {
         this.personID = personID;
         this.firstName = firstName;
@@ -188,7 +139,7 @@ public class Person {
 			return false;
 		}
 
-		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+		//SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 		try { 
 			StringBuilder sb = new StringBuilder();
 	        sb.append(this.personID).append(",")
